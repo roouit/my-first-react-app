@@ -1,0 +1,12 @@
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style-type: none;
+}
+
+.add-todo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "text": "Taas joku uusiasdfdsf",
+      "due": "2021-11-19T11:16",
+      "isDone": false,
+      "list": "työ",
+      "id": 5
+    },
+    {
+      "text": "asdfasdf",
+      "due": "2021-11-17T11:29",
+      "isDone": false,
+      "list": "työ",
+      "id": 6
+    }
+  ],
+  "lists": ["Opiskelu", "Työ"]
+}
