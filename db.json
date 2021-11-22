@@ -1,19 +1,28 @@
 {
   "todos": [
     {
-      "text": "Taas joku uusiasdfdsf",
-      "due": "2021-11-19T11:16",
+      "text": "JEEJEE",
+      "due": "2021-11-22T12:10",
       "isDone": false,
-      "list": "työ",
-      "id": 5
+      "list": "opiskelujutut",
+      "id": 1
     },
     {
-      "text": "asdfasdf",
-      "due": "2021-11-17T11:29",
+      "text": "testi",
+      "due": "",
       "isDone": false,
-      "list": "työ",
-      "id": 6
+      "list": "opiskelujutut",
+      "id": 2
     }
   ],
-  "lists": ["Opiskelu", "Työ"]
+  "lists": [
+    {
+      "id": 1,
+      "name": "Opiskelu"
+    },
+    {
+      "id": 2,
+      "name": "Työ"
+    }
+  ]
 }

@@ -1,4 +1,7 @@
 .todo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   background-color: #fff;
   width: fit-content;

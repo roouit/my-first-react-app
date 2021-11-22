@@ -1,3 +1,9 @@
+async function getAllLists () {
+  let lists = await fetch('http://localhost:3010/lists')
+  lists = await lists.json()
+  return lists
+}
+
 async function getAllTodos () {
   let todos = await fetch('http://localhost:3010/todos')
   todos = await todos.json()
@@ -59,6 +65,7 @@ async function updateTodo(todo) {
 }
 
 const functions = {
+  getAllLists: getAllLists,
   getAllTodos: getAllTodos,
   addTodo: addTodo,
   updateIsDone: updateIsDone,

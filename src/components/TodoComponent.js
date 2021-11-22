@@ -1,9 +1,13 @@
 import './TodoComponent.css'
 import moment from 'moment'
-import { updateIsDoneDb } from './database'
+import { updateIsDone } from './database'
 import React, { useState, useEffect, useRef } from 'react'
+import { useSelector } from "react-redux";
+import { selectLists } from "../features/listSlice"
+import { Draggable } from 'react-beautiful-dnd';
 
-const TodoComponent = ({ todo, deleteTodo, editTodo }) => {
+const TodoComponent = ({ todo, deleteTodo, editTodo, index }) => {
+  const lists = useSelector(selectLists)
   const [editedData, setEditedData] = useState(todo)
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
@@ -18,7 +22,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo }) => {
   }, [editedData, editTodo])
 
   const handleUpdateIsDone = async () => {
-    await updateIsDoneDb(todo.id)
+    await updateIsDone(todo.id)
     setIsDone(!isDone)
   }
 
@@ -61,9 +65,8 @@ const TodoComponent = ({ todo, deleteTodo, editTodo }) => {
         </label>
         <label>
           <span>Lista</span>
-          <select defaultValue="työ" name="todoList" className="edit-todo-list">
-            <option value="opiskelu">Opiskelu</option>
-            <option value="työ">Työ</option>
+          <select defaultValue={editedData.list} name="todoList" className="edit-todo-list">
+            {lists.map(list => <option key={list.id.toString()} value={list.name.toLowerCase()}>{list.name}</option>)}
           </select>
         </label>
         <span>
@@ -90,27 +93,35 @@ const TodoComponent = ({ todo, deleteTodo, editTodo }) => {
       ></img>
     </li>
   ) : (
-    <li className={isDone ? 'todo done' : 'todo'}>
-      <input
-        className="todo-isdone"
-        type="checkbox"
-        defaultChecked={isDone}
-        onChange={() => handleUpdateIsDone()}
-      ></input>
-      <span>{todo.text}</span>
-      <img
-        className="todo-delete-button"
-        src="delete-bin-fill.png"
-        alt="poista ikoni"
-        onClick={() => deleteTodo(todo.id)}
-      ></img>
-      <img
-        className="todo-edit-button"
-        src="pencil-fill.png"
-        alt="muokkaa ikoni"
-        onClick={() => setEditView(!editView)}
-      ></img>
-    </li>
+    <Draggable draggableId={editedData.id.toString()} index={index}>
+      {(provided) => (
+        <li className={isDone ? 'todo done' : 'todo'} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+        <label>
+          <input
+            className="todo-isdone"
+            type="checkbox"
+            defaultChecked={isDone}
+            onChange={() => handleUpdateIsDone()}
+          ></input>
+          {todo.text}
+        </label>
+        {editedData.due ? <span>{editedData.due}</span> : ''}
+        {editedData.list ? <span>{editedData.list}</span> : ''}
+        <img
+          className="todo-delete-button"
+          src="delete-bin-fill.png"
+          alt="poista ikoni"
+          onClick={() => deleteTodo(todo.id)}
+        ></img>
+        <img
+          className="todo-edit-button"
+          src="pencil-fill.png"
+          alt="muokkaa ikoni"
+          onClick={() => setEditView(!editView)}
+        ></img>
+      </li>
+      )}
+    </Draggable>
   )
 }
 // , (prevProps, nextProps) => {

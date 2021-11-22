@@ -3,8 +3,12 @@ import "./TodoListComponent.css"
 import {useState, useEffect, useCallback} from 'react'
 import db from "./database"
 import moment from "moment"
+import { useSelector } from "react-redux";
+import { selectLists } from "../features/listSlice"
+import { Droppable } from "react-beautiful-dnd"
 
 const TodoListComponent = () => {
+  const lists = useSelector(selectLists)
   const [todoItems, setTodoItems] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [addTodoView, setAddTodoView] = useState(false)
@@ -22,8 +26,8 @@ const TodoListComponent = () => {
     e.preventDefault()
     const newTodoData = {
       text: e.target.todoText.value,
-      due: e.target.todoDue.value,
-      list: e.target.todoList.value,
+      due: null,
+      list: null,
       isDone: false,
     }
     let newTodo = await db.addTodo(newTodoData)
@@ -50,21 +54,40 @@ const TodoListComponent = () => {
 
   return (
     <div className="todo-wrapper">
-      <ul className="todo-list">
-        {!isLoaded
-          ? 'Ladataan tehtäviä..'
-          : todoItems.map((todo) => {
-              return (
-                <TodoComponent
-                  key={todo.id.toString()}
-                  todo={todo}
-                  deleteTodo={deleteTodo}
-                  editTodo={editTodo}
-                />
-              )
-            })}
-      </ul>
-      {!addTodoView ? (
+      <form className="add-todo-form" onSubmit={(e) => handleAddTodo(e)}>
+            <input
+              type="text"
+              name="todoText"
+              className="add-todo-text"
+              placeholder="Lisää uusi tehtävä.."
+            ></input>
+          <span>
+            <button className="add-todo-save-button">Tallenna</button>
+          </span>
+        </form>
+      <Droppable droppableId="tehtävät">
+        {(provided) => (
+          <ul ref={provided.innerRef} {...provided.droppableProps} className="todo-list">
+            {!isLoaded
+              ? 'Ladataan tehtäviä..'
+              : todoItems.map((todo, index) => {
+                  return (
+                    <TodoComponent
+                      key={todo.id.toString()}
+                      todo={todo}
+                      deleteTodo={deleteTodo}
+                      editTodo={editTodo}
+                      index={index}
+                    />
+                  )
+                })
+            }
+            {provided.placeholder}
+          </ul>
+        )}
+      
+      </Droppable>
+      {/* {!addTodoView ? (
         <button
           className="add-todo-button"
           onClick={() => setAddTodoView(!addTodoView)}
@@ -99,9 +122,7 @@ const TodoListComponent = () => {
               name="todoList"
               className="add-todo-list"
             >
-              <option value="opiskelu">Opiskelu</option>
-              <option value="työ">Työ</option>
-              <option value="muu">Muu</option>
+              {lists.map(list => <option key={list.id.toString()} value={list.name.toLowerCase()}>{list.name}</option>)}
             </select>
           </label>
           <span>
@@ -114,7 +135,7 @@ const TodoListComponent = () => {
             </button>
           </span>
         </form>
-      )}
+      )} */}
     </div>
   )
 }

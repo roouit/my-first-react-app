@@ -1,11 +1,11 @@
-import React, {useContext} from 'react'
+import React, {useEffect} from 'react'
 import './NavComponent.css'
 import { Link } from 'react-router-dom'
-import listContext from '../listContext'
+import { useSelector } from "react-redux";
+import { selectLists } from "../features/listSlice"
 
 const NavComponent = () => {
-  const lists = useContext(listContext)
-  console.log(lists)
+  const lists = useSelector(selectLists)
   return (
     <div className="navigation">
       <Link to="/">
@@ -23,8 +23,8 @@ const NavComponent = () => {
           Listat
         </Link>
       </div>
-      <div>{lists.toString()}</div>
-      <div className="link-element">
+      {lists.map(list => <Link key={list.id.toString()} className="list-link" to={`/listat/${list.name.toLowerCase()}`}>{list.name}</Link>)}
+      {/* <div className="link-element">
         <img
           className="link-icon"
           src="calendar-line.png"
@@ -33,7 +33,7 @@ const NavComponent = () => {
         <Link className="nav-link" to="/kalenteri">
           Kalenteri
         </Link>
-      </div>
+      </div> */}
       <div className="link-element">
         <img
           className="link-icon"
