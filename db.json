@@ -13,6 +13,20 @@
       "isDone": false,
       "list": "opiskelujutut",
       "id": 2
+    },
+    {
+      "text": "uusi",
+      "due": null,
+      "list": null,
+      "isDone": false,
+      "id": 3
+    },
+    {
+      "text": "toinen uusi",
+      "due": null,
+      "list": null,
+      "isDone": false,
+      "id": 4
     }
   ],
   "lists": [

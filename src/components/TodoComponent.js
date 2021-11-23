@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectLists } from "../features/listSlice"
 import { Draggable } from 'react-beautiful-dnd';
 
-const TodoComponent = ({ todo, deleteTodo, editTodo, index }) => {
+const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
   const lists = useSelector(selectLists)
   const [editedData, setEditedData] = useState(todo)
   const [isDone, setIsDone] = useState(todo.isDone)
@@ -93,7 +93,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index }) => {
       ></img>
     </li>
   ) : (
-    <Draggable draggableId={editedData.id.toString()} index={index}>
+    <Draggable draggableId={todoId} index={index}>
       {(provided) => (
         <li className={isDone ? 'todo done' : 'todo'} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
         <label>
