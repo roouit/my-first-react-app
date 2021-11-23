@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectLists } from "../features/listSlice"
 import { Droppable } from "react-beautiful-dnd"
 
-const TodoListComponent = ({data, addToListData}) => {
+const TodoListComponent = ({data, addToListData, deleteTodo}) => {
   const lists = useSelector(selectLists)
   const [todoItems, setTodoItems] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
@@ -30,14 +30,6 @@ const TodoListComponent = ({data, addToListData}) => {
     }
     let newTodo = await db.addTodo(newTodoData)
     addToListData(newTodo)
-  }
-
-  const deleteTodo = async (id) => {
-    let newTodoItems = todoItems.filter(todo => {
-      return todo.id !== id
-    })
-    setTodoItems(newTodoItems)
-    await db.deleteTodo(id)
   }
 
   const editTodo = useCallback(

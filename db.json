@@ -8,25 +8,32 @@
       "id": 1
     },
     {
-      "text": "testi",
-      "due": "",
-      "isDone": false,
-      "list": "opiskelujutut",
-      "id": 2
-    },
-    {
-      "text": "uusi",
-      "due": null,
-      "isDone": false,
-      "list": null,
-      "id": 3
-    },
-    {
       "text": "toinen uusi",
       "due": null,
       "isDone": false,
       "list": null,
       "id": 4
+    },
+    {
+      "text": "TÄmä on uusit ehtävä",
+      "due": null,
+      "list": null,
+      "isDone": false,
+      "id": 5
+    },
+    {
+      "text": "Käy kaupassa",
+      "due": null,
+      "list": null,
+      "isDone": false,
+      "id": 6
+    },
+    {
+      "text": "sddsffd",
+      "due": null,
+      "list": null,
+      "isDone": false,
+      "id": 11
     }
   ],
   "lists": [

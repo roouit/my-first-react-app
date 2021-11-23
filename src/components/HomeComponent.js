@@ -37,12 +37,27 @@ const HomeComponent = () => {
     let newListData = {
       ...listData
     }
-    let keys = Object.keys(newListData.todos)
+    let keys = Object.keys(listData.todos)
     let lastTodoIdNum = Number(keys[keys.length - 1].split('-')[1])
     let newTodoId = `todo-${lastTodoIdNum + 1}`
     newListData.todos[newTodoId] = newTodo
     newListData.lists['tehtävät'].todoIds.push(newTodoId)
     setListData(newListData)
+  }
+
+  const deleteTodo = async (id) => {
+    let newListData = {
+      ...listData
+    }
+    let todoIdToDelete = Object.keys(listData.todos).find(key => {
+      return listData.todos[key].id === id
+    })
+    delete newListData.todos[todoIdToDelete]
+    newListData.lists['tehtävät'].todoIds = Object.keys(listData.todos).filter(key => {
+      return listData.todos[key].id !== id
+    })
+    setListData(newListData)
+    await db.deleteTodo(id)
   }
 
   const onDragEnd = result => {
@@ -62,7 +77,7 @@ const HomeComponent = () => {
     <div className="todos-today">
       <h1>Tehtävät</h1>
       <DragDropContext onDragEnd={result => onDragEnd(result)}>
-        {isLoaded ? <TodoListComponent data={listData} addToListData={addToListData}/> : "Loading"}
+        {isLoaded ? <TodoListComponent data={listData} addToListData={addToListData} deleteTodo={deleteTodo}/> : "Loading"}
       </DragDropContext>
     </div>
   )
