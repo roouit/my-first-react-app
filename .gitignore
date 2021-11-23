@@ -7,6 +7,10 @@
 
 # testing
 /coverage
+.http
+
+# data
+.json
 
 # production
 /build
