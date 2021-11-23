@@ -35,9 +35,6 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
       list: e.target.todoList.value,
       isDone: editedData.isDone,
     })
-    // setTimeout(() => {
-    //   setEditView(!editView)
-    // }, 500);
     setEditView(!editView)
   }
 
@@ -124,14 +121,5 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
     </Draggable>
   )
 }
-// , (prevProps, nextProps) => {
-
-//   for (const prop in prevProps.todo) {
-//     if (prevProps.todo[prop] !== nextProps.todo[prop]) {
-//       return false
-//     }
-//   }
-//   return true
-// })
 
 export default TodoComponent

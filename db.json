@@ -17,15 +17,15 @@
     {
       "text": "uusi",
       "due": null,
-      "list": null,
       "isDone": false,
+      "list": null,
       "id": 3
     },
     {
       "text": "toinen uusi",
       "due": null,
-      "list": null,
       "isDone": false,
+      "list": null,
       "id": 4
     }
   ],

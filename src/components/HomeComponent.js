@@ -5,15 +5,12 @@ import db from './database'
 import { useState, useEffect } from 'react'
 
 const HomeComponent = () => {
-  // const [todos, setTodos] = useState([])
-  // const [lists, setLists] = useState([])
   const [listData, setListData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     async function f() {
       let todos = await db.getAllTodos()
-      // let lists = await db.getAllLists()
       let listData = {
         todos: {},
         lists: {
@@ -30,8 +27,6 @@ const HomeComponent = () => {
         listData.todos[todoId] = todo
         listData.lists['tehtävät'].todoIds.push(todoId)
       });
-      // setTodos(todos)
-      // setLists(lists)
       setListData(listData)
       setIsLoaded(true)
     }
@@ -68,7 +63,6 @@ const HomeComponent = () => {
       <h1>Tehtävät</h1>
       <DragDropContext onDragEnd={result => onDragEnd(result)}>
         {isLoaded ? <TodoListComponent data={listData} addToListData={addToListData}/> : "Loading"}
-        {/* <TodoListComponent data={listData}/> */}
       </DragDropContext>
     </div>
   )

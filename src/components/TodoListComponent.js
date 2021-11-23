@@ -2,7 +2,6 @@ import TodoComponent from "./TodoComponent"
 import "./TodoListComponent.css"
 import {useState, useEffect, useCallback} from 'react'
 import db from "./database"
-import moment from "moment"
 import { useSelector } from "react-redux";
 import { selectLists } from "../features/listSlice"
 import { Droppable } from "react-beautiful-dnd"
@@ -11,7 +10,6 @@ const TodoListComponent = ({data, addToListData}) => {
   const lists = useSelector(selectLists)
   const [todoItems, setTodoItems] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
-  const [addTodoView, setAddTodoView] = useState(false)
 
   useEffect(() => {
     async function f() {
@@ -32,8 +30,6 @@ const TodoListComponent = ({data, addToListData}) => {
     }
     let newTodo = await db.addTodo(newTodoData)
     addToListData(newTodo)
-    // setTodoItems([...todoItems, newTodo])
-    // setAddTodoView(!addTodoView)
   }
 
   const deleteTodo = async (id) => {
@@ -82,73 +78,11 @@ const TodoListComponent = ({data, addToListData}) => {
                         />
                       )
               })
-              
-              // todoItems.map((todo, index) => {
-              //     return (
-              //       <TodoComponent
-              //         key={todo.id.toString()}
-              //         todo={todo}
-              //         deleteTodo={deleteTodo}
-              //         editTodo={editTodo}
-              //         index={index}
-              //       />
-              //     )
-              //   })
             }
             {provided.placeholder}
           </ul>
         )}
-      
       </Droppable>
-      {/* {!addTodoView ? (
-        <button
-          className="add-todo-button"
-          onClick={() => setAddTodoView(!addTodoView)}
-        >
-          Lisää
-        </button>
-      ) : (
-        <form className="add-todo-form" onSubmit={(e) => handleAddTodo(e)}>
-          <label>
-            <span>Kuvaus</span>
-            <input
-              type="text"
-              name="todoText"
-              className="add-todo-text"
-              placeholder="Anna tehtävälle kuvaus.."
-            ></input>
-          </label>
-          <label>
-            <span>Määräaika</span>
-            <input
-              type="datetime-local"
-              name="todoDue"
-              defaultValue={moment().format('YYYY-MM-DDTHH:mm')}
-              min={moment().format('YYYY-MM-DDTHH:mm')}
-              className="add-todo-due"
-            ></input>
-          </label>
-          <label>
-            <span>Lista</span>
-            <select
-              defaultValue="työ"
-              name="todoList"
-              className="add-todo-list"
-            >
-              {lists.map(list => <option key={list.id.toString()} value={list.name.toLowerCase()}>{list.name}</option>)}
-            </select>
-          </label>
-          <span>
-            <button className="add-todo-save-button">Tallenna</button>
-            <button
-              className="add-todo-cancel-button"
-              onClick={() => setAddTodoView(!addTodoView)}
-            >
-              Peruuta
-            </button>
-          </span>
-        </form>
-      )} */}
     </div>
   )
 }
