@@ -42,6 +42,7 @@ async function updateIsDone(id) {
       due: todo.due,
       isDone: !todo.isDone,
       list: todo.list,
+      tags: todo.tags
     }),
   }
   await fetch(`http://localhost:3010/todos/${id}`, requestOptions)
@@ -53,6 +54,7 @@ async function updateTodo(todo) {
     due: todo.due,
     isDone: todo.isDone,
     list: todo.list,
+    tags: todo.tags
   }
   const requestOptions = {
     method: 'PUT',

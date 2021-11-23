@@ -27,6 +27,7 @@ const TodoListComponent = ({data, addTodo, deleteTodo, editTodo}) => {
       due: null,
       list: null,
       isDone: false,
+      tags: []
     }
     let newTodo = await db.addTodo(newTodoData)
     addTodo(newTodo)

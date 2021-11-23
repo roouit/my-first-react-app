@@ -24,6 +24,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
         due: e.target.todoDue.value,
         list: e.target.todoList.value,
         isDone: todo.isDone,
+        tags: todo.tags
     })
     setEditView(!editView)
   }
@@ -94,6 +95,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
         </label>
         {todo.due ? <span>{todo.due}</span> : ''}
         {todo.list ? <span>{todo.list}</span> : ''}
+        {todo.tags ? todo.tags.map(tag => <span key={tag}>#{tag}</span>) : ''}
         <img
           className="todo-delete-button"
           src="delete-bin-fill.png"
