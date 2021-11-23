@@ -8,32 +8,25 @@
       "id": 1
     },
     {
-      "text": "toinen uusi",
-      "due": null,
+      "text": "Mene salille",
+      "due": "",
       "isDone": false,
-      "list": null,
+      "list": "opiskelujutut",
       "id": 4
     },
     {
-      "text": "TÄmä on uusit ehtävä",
-      "due": null,
-      "list": null,
+      "text": "Käy kaupassa eli Prismassa",
+      "due": "",
       "isDone": false,
-      "id": 5
-    },
-    {
-      "text": "Käy kaupassa",
-      "due": null,
-      "list": null,
-      "isDone": false,
+      "list": "opiskelujutut",
       "id": 6
     },
     {
-      "text": "sddsffd",
-      "due": null,
-      "list": null,
+      "text": "sdd",
+      "due": "",
       "isDone": false,
-      "id": 11
+      "list": "työasiat",
+      "id": 12
     }
   ],
   "lists": [

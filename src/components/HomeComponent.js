@@ -33,7 +33,7 @@ const HomeComponent = () => {
     f()
   }, [])
 
-  const addToListData = (newTodo) => {
+  const addTodo = (newTodo) => {
     let newListData = {
       ...listData
     }
@@ -60,6 +60,18 @@ const HomeComponent = () => {
     await db.deleteTodo(id)
   }
 
+  const editTodo = async (todo) => {
+      let newListData = {
+        ...listData
+      }
+      let newTodo = await db.updateTodo(todo)
+      let todoIdToEdit = Object.keys(listData.todos).find(key => {
+        return listData.todos[key].id === newTodo.id
+      })
+      newListData.todos[todoIdToEdit] = newTodo
+      setListData(newListData)
+    }
+
   const onDragEnd = result => {
     const { destination, source, draggableId } = result
     const list = listData.lists[source.droppableId]
@@ -77,7 +89,7 @@ const HomeComponent = () => {
     <div className="todos-today">
       <h1>Tehtävät</h1>
       <DragDropContext onDragEnd={result => onDragEnd(result)}>
-        {isLoaded ? <TodoListComponent data={listData} addToListData={addToListData} deleteTodo={deleteTodo}/> : "Loading"}
+        {isLoaded ? <TodoListComponent data={listData} addTodo={addTodo} deleteTodo={deleteTodo} editTodo={editTodo}/> : "Loading"}
       </DragDropContext>
     </div>
   )

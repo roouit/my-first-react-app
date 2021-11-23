@@ -1,12 +1,12 @@
 import TodoComponent from "./TodoComponent"
 import "./TodoListComponent.css"
-import {useState, useEffect, useCallback} from 'react'
+import {useState, useEffect} from 'react'
 import db from "./database"
 import { useSelector } from "react-redux";
 import { selectLists } from "../features/listSlice"
 import { Droppable } from "react-beautiful-dnd"
 
-const TodoListComponent = ({data, addToListData, deleteTodo}) => {
+const TodoListComponent = ({data, addTodo, deleteTodo, editTodo}) => {
   const lists = useSelector(selectLists)
   const [todoItems, setTodoItems] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
@@ -29,17 +29,9 @@ const TodoListComponent = ({data, addToListData, deleteTodo}) => {
       isDone: false,
     }
     let newTodo = await db.addTodo(newTodoData)
-    addToListData(newTodo)
+    addTodo(newTodo)
   }
 
-  const editTodo = useCallback(
-    async (todo) => {
-      await db.updateTodo(todo)
-      let newTodos = await db.getAllTodos()
-      setTodoItems(newTodos)
-    },
-    [setTodoItems]
-  )
   return (
     <div className="todo-wrapper">
       <form className="add-todo-form" onSubmit={(e) => handleAddTodo(e)}>

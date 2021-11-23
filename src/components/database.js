@@ -54,14 +54,13 @@ async function updateTodo(todo) {
     isDone: todo.isDone,
     list: todo.list,
   }
-  // console.log(obj)
-  // console.log(JSON.stringify(obj))
   const requestOptions = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(obj),
   }
-  await fetch(`http://localhost:3010/todos/${todo.id}`, requestOptions)
+  let result = await fetch(`http://localhost:3010/todos/${todo.id}`, requestOptions)
+  return await result.json()
 }
 
 const functions = {

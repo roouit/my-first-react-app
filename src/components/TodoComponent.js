@@ -1,25 +1,15 @@
 import './TodoComponent.css'
 import moment from 'moment'
 import { updateIsDone } from './database'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { useSelector } from "react-redux";
 import { selectLists } from "../features/listSlice"
 import { Draggable } from 'react-beautiful-dnd';
 
 const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
   const lists = useSelector(selectLists)
-  const [editedData, setEditedData] = useState(todo)
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
-  const isMounted = useRef(false)
-
-  useEffect(() => {
-    if (isMounted.current) {
-      editTodo(editedData)
-    } else {
-      isMounted.current = true
-    }
-  }, [editedData, editTodo])
 
   const handleUpdateIsDone = async () => {
     await updateIsDone(todo.id)
@@ -28,12 +18,12 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
 
   const handleEditTodo = e => {
     e.preventDefault()
-    setEditedData({
-      id: editedData.id,
-      text: e.target.todoText.value,
-      due: e.target.todoDue.value,
-      list: e.target.todoList.value,
-      isDone: editedData.isDone,
+    editTodo({
+        id: todo.id,
+        text: e.target.todoText.value,
+        due: e.target.todoDue.value,
+        list: e.target.todoList.value,
+        isDone: todo.isDone,
     })
     setEditView(!editView)
   }
@@ -47,7 +37,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
             type="text"
             name="todoText"
             className="edit-todo-text"
-            defaultValue={editedData.text}
+            defaultValue={todo.text}
           ></input>
         </label>
         <label>
@@ -55,14 +45,14 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
           <input
             type="datetime-local"
             name="todoDue"
-            defaultValue={editedData.due}
+            defaultValue={todo.due}
             min={moment().format('YYYY-MM-DDTHH:mm')}
             className="edit-todo-due"
           ></input>
         </label>
         <label>
           <span>Lista</span>
-          <select defaultValue={editedData.list} name="todoList" className="edit-todo-list">
+          <select defaultValue={todo.list} name="todoList" className="edit-todo-list">
             {lists.map(list => <option key={list.id.toString()} value={list.name.toLowerCase()}>{list.name}</option>)}
           </select>
         </label>
@@ -102,8 +92,8 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
           ></input>
           {todo.text}
         </label>
-        {editedData.due ? <span>{editedData.due}</span> : ''}
-        {editedData.list ? <span>{editedData.list}</span> : ''}
+        {todo.due ? <span>{todo.due}</span> : ''}
+        {todo.list ? <span>{todo.list}</span> : ''}
         <img
           className="todo-delete-button"
           src="delete-bin-fill.png"
