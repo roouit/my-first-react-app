@@ -21,9 +21,9 @@
     },
     {
       "text": "uusi",
-      "due": null,
-      "list": null,
+      "due": "",
       "isDone": false,
+      "list": "opiskelujutut",
       "tags": [],
       "id": 5
     }

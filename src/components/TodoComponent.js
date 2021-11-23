@@ -4,34 +4,56 @@ import { updateIsDone } from './database'
 import React, { useState } from 'react'
 import { useSelector } from "react-redux";
 import { selectLists } from "../features/listSlice"
+import { selectTags } from '../features/tagSlice';
 import { Draggable } from 'react-beautiful-dnd';
 
 const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
   const lists = useSelector(selectLists)
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
+  const [tags, setTags] = useState(todo.tags)
 
   const handleUpdateIsDone = async () => {
     await updateIsDone(todo.id)
     setIsDone(!isDone)
   }
 
-  const handleEditTodo = e => {
+  const handleSubmit = e => {
     e.preventDefault()
-    editTodo({
+    console.log(e.screenX)
+    if (e.target.todoTags.value) {  
+      handleAddTag(e.target.todoTags)
+    } else {
+      editTodo({
         id: todo.id,
         text: e.target.todoText.value,
         due: e.target.todoDue.value,
         list: e.target.todoList.value,
         isDone: todo.isDone,
         tags: todo.tags
-    })
-    setEditView(!editView)
+      })
+      setEditView(!editView)
+    }
+    
+  }
+
+  const handleAddTag = target => {
+    if (target.value) {
+      if (!tags.includes(target.value)) {
+        setTags([
+          ...tags,
+          target.value
+        ])
+        target.value = ''
+      } else {
+        alert("Samanniminen tagi")
+      }
+    }
   }
 
   return editView ? (
     <li className={isDone ? 'todo done' : 'todo'}>
-      <form className="edit-todo-form" onSubmit={(e) => handleEditTodo(e)}>
+      <form className="edit-todo-form" onSubmit={(e) => handleSubmit(e)}>
         <label>
           <span>Kuvaus</span>
           <input
@@ -57,6 +79,21 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
             {lists.map(list => <option key={list.id.toString()} value={list.name.toLowerCase()}>{list.name}</option>)}
           </select>
         </label>
+        <label>
+          <span>Tagit</span>
+          <input
+            type="tags"
+            name="todoTags"
+            className="edit-todo-tags"
+            placeholder="Lisää tagi.."
+            onBlur={(e) => handleAddTag(e.target)}
+            // onKeyPress={(e) => handleAddTag(e)}
+          ></input>
+        </label>
+        {tags ? tags.map(tag => {
+          return <span key={tag}>#{tag}</span>
+        }) : ''}
+        
         <span>
           <button className="edit-todo-save-button">Tallenna</button>
           <button
