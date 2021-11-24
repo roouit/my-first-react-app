@@ -2,19 +2,19 @@ import './HomeComponent.css'
 import TodoListComponent from './TodoListComponent'
 import { DragDropContext } from 'react-beautiful-dnd'
 import db from './database'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const HomeComponent = () => {
   const [listData, setListData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    async function f() {
-      let todos = await db.getAllTodos()
-      let listData = {
+    async function f () {
+      const todos = await db.getAllTodos()
+      const listData = {
         todos: {},
         lists: {
-          'tehtävät': {
+          tehtävät: {
             id: 'tehtävät',
             title: 'All todos',
             todoIds: []
@@ -23,56 +23,68 @@ const HomeComponent = () => {
         listOrder: ['tehtävät']
       }
       todos.forEach((todo, index) => {
-        let todoId = `todo-${index}`
+        const todoId = `todo-${index}`
         listData.todos[todoId] = todo
         listData.lists['tehtävät'].todoIds.push(todoId)
-      });
+      })
       setListData(listData)
       setIsLoaded(true)
     }
     f()
   }, [])
 
-  const addTodo = (newTodo) => {
-    let newListData = {
+  const handleAddTodo = async (e) => {
+    e.preventDefault()
+    const newTodoData = {
+      text: e.target.todoText.value,
+      due: null,
+      list: null,
+      isDone: false,
+      tags: []
+    }
+    e.target.todoText.value = ''
+    const newTodo = await db.addTodo(newTodoData)
+    const newListData = {
       ...listData
     }
-    let keys = Object.keys(listData.todos)
-    let lastTodoIdNum = Number(keys[keys.length - 1].split('-')[1])
-    let newTodoId = `todo-${lastTodoIdNum + 1}`
+    const keys = Object.keys(listData.todos)
+    const lastTodoIdNum = Number(keys[keys.length - 1].split('-')[1])
+    const newTodoId = `todo-${lastTodoIdNum + 1}`
     newListData.todos[newTodoId] = newTodo
     newListData.lists['tehtävät'].todoIds.push(newTodoId)
     setListData(newListData)
   }
 
   const deleteTodo = async (id) => {
-    let newListData = {
+    const newListData = {
       ...listData
     }
-    let todoIdToDelete = Object.keys(listData.todos).find(key => {
+    const todoIdToDelete = Object.keys(listData.todos).find((key) => {
       return listData.todos[key].id === id
     })
     delete newListData.todos[todoIdToDelete]
-    newListData.lists['tehtävät'].todoIds = Object.keys(listData.todos).filter(key => {
-      return listData.todos[key].id !== id
-    })
+    newListData.lists['tehtävät'].todoIds = Object.keys(listData.todos).filter(
+      (key) => {
+        return listData.todos[key].id !== id
+      }
+    )
     setListData(newListData)
     await db.deleteTodo(id)
   }
 
   const editTodo = async (todo) => {
-      let newListData = {
-        ...listData
-      }
-      let newTodo = await db.updateTodo(todo)
-      let todoIdToEdit = Object.keys(listData.todos).find(key => {
-        return listData.todos[key].id === newTodo.id
-      })
-      newListData.todos[todoIdToEdit] = newTodo
-      setListData(newListData)
+    const newListData = {
+      ...listData
     }
+    const newTodo = await db.updateTodo(todo)
+    const todoIdToEdit = Object.keys(listData.todos).find((key) => {
+      return listData.todos[key].id === newTodo.id
+    })
+    newListData.todos[todoIdToEdit] = newTodo
+    setListData(newListData)
+  }
 
-  const onDragEnd = result => {
+  const onDragEnd = (result) => {
     const { destination, source, draggableId } = result
     const list = listData.lists[source.droppableId]
     const newTodoIds = Array.from(list.todoIds)
@@ -86,10 +98,31 @@ const HomeComponent = () => {
   }
 
   return (
-    <div className="todos-today">
+    <div className='todos-today'>
       <h1>Tehtävät</h1>
-      <DragDropContext onDragEnd={result => onDragEnd(result)}>
-        {isLoaded ? <TodoListComponent data={listData} addTodo={addTodo} deleteTodo={deleteTodo} editTodo={editTodo}/> : "Loading"}
+      <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
+        <input
+          type='text'
+          name='todoText'
+          className='add-todo-text'
+          placeholder='Lisää uusi tehtävä..'
+        ></input>
+        <span>
+          <button className='add-todo-save-button'>Tallenna</button>
+        </span>
+      </form>
+      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+        {isLoaded
+          ? (
+          <TodoListComponent
+            data={listData}
+            deleteTodo={deleteTodo}
+            editTodo={editTodo}
+          />
+            )
+          : (
+              'Ladataan...'
+            )}
       </DragDropContext>
     </div>
   )

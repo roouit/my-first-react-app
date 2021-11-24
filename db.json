@@ -2,11 +2,13 @@
   "todos": [
     {
       "text": "JEEJEE",
-      "due": "2021-11-22T12:10",
+      "due": "2021-11-25T12:10",
       "isDone": false,
       "list": "opiskelujutut",
-      "id": 1,
-      "tags": []
+      "tags": [
+        "jotain"
+      ],
+      "id": 1
     },
     {
       "text": "Mene salille",
@@ -20,11 +22,14 @@
       ]
     },
     {
-      "text": "uusi",
+      "text": "uusissa",
       "due": "",
       "isDone": false,
-      "list": "opiskelujutut",
-      "tags": [],
+      "list": "työasiat",
+      "tags": [
+        "muut",
+        "opiskelu"
+      ],
       "id": 5
     }
   ],

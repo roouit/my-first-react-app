@@ -6,5 +6,5 @@ export default configureStore({
   reducer: {
     lists: listReducer,
     tags: tagReducer
-  },
+  }
 })

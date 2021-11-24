@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import './NavComponent.css'
 import { Link } from 'react-router-dom'
-import { useSelector } from "react-redux";
-import { selectLists } from "../features/listSlice"
+import { useSelector } from 'react-redux'
+import { selectLists } from '../features/listSlice'
 
 const NavComponent = () => {
   const lists = useSelector(selectLists)
