@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/react": "^5.10.1",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
@@ -21,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "jsonserver": "npx json-server -H localhost -p 3010 -w db.json"
   },
   "eslintConfig": {
     "extends": [

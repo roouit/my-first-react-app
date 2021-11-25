@@ -3,6 +3,8 @@ import TodoListComponent from './TodoListComponent'
 import { DragDropContext } from 'react-beautiful-dnd'
 import db from './database'
 import React, { useState, useEffect } from 'react'
+import FullCalendar from '@fullcalendar/react' // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 
 const HomeComponent = () => {
   const [listData, setListData] = useState([])
@@ -98,32 +100,45 @@ const HomeComponent = () => {
   }
 
   return (
-    <div className='todos-today'>
-      <h1>Tehtävät</h1>
-      <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
-        <input
-          type='text'
-          name='todoText'
-          className='add-todo-text'
-          placeholder='Lisää uusi tehtävä..'
-        ></input>
-        <span>
-          <button className='add-todo-save-button'>Tallenna</button>
-        </span>
-      </form>
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-        {isLoaded
-          ? (
-          <TodoListComponent
-            data={listData}
-            deleteTodo={deleteTodo}
-            editTodo={editTodo}
-          />
-            )
-          : (
-              'Ladataan...'
-            )}
-      </DragDropContext>
+    <div className='home-wrapper'>
+      <div className='todos-today'>
+        <h1>Tehtävät</h1>
+        <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
+          <input
+            type='text'
+            name='todoText'
+            className='add-todo-text'
+            placeholder='Lisää uusi tehtävä..'
+          ></input>
+          <span>
+            <button className='add-todo-save-button'>Tallenna</button>
+          </span>
+        </form>
+        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+          {isLoaded
+            ? (
+            <TodoListComponent
+              data={listData}
+              deleteTodo={deleteTodo}
+              editTodo={editTodo}
+            />
+              )
+            : (
+                'Ladataan...'
+              )}
+        </DragDropContext>
+      </div>
+      <div className='calendar'>
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          initialView='dayGridWeek'
+          weekends={false}
+          events={[
+            { title: 'Käy kaupassa', date: '2021-11-29' },
+            { title: 'Treenit', date: '2021-12-01' }
+          ]}
+        />
+      </div>
     </div>
   )
 }
