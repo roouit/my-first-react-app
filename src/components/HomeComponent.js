@@ -3,12 +3,13 @@ import TodoListComponent from './TodoListComponent'
 import { DragDropContext } from 'react-beautiful-dnd'
 import db from './database'
 import React, { useState, useEffect } from 'react'
-import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
 const HomeComponent = () => {
   const [listData, setListData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
+  const [filters, setFilters] = useState([])
 
   useEffect(() => {
     async function f () {
@@ -57,6 +58,21 @@ const HomeComponent = () => {
     setListData(newListData)
   }
 
+  const handleAddFilters = (e) => {
+    e.preventDefault()
+    if (e.target.todoFilters.value) {
+      setFilters([...filters, e.target.todoFilters.value])
+      e.target.todoFilters.value = ''
+    }
+  }
+
+  const handleRemoveFilter = (e) => {
+    const newFilters = [...filters].filter((filter) => {
+      return filter !== e.target.textContent
+    })
+    setFilters(newFilters)
+  }
+
   const deleteTodo = async (id) => {
     const newListData = {
       ...listData
@@ -103,6 +119,23 @@ const HomeComponent = () => {
     <div className='home-wrapper'>
       <div className='todos-today'>
         <h1>Tehtävät</h1>
+        <form className='filter-todos-form' onSubmit={(e) => handleAddFilters(e)}>
+          <input
+            type='text'
+            name='todoFilters'
+            className='filter-todos'
+            placeholder='Suodata tehtäviä..'
+          ></input>
+        </form>
+        <div>
+          {filters.map(filter => {
+            return (
+              <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
+                {filter}<br></br>
+              </span>
+            )
+          })}
+        </div>
         <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
           <input
             type='text'
@@ -119,6 +152,8 @@ const HomeComponent = () => {
             ? (
             <TodoListComponent
               data={listData}
+              listName='tehtävät'
+              filters={filters}
               deleteTodo={deleteTodo}
               editTodo={editTodo}
             />

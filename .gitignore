@@ -10,7 +10,7 @@
 .http
 
 # data
-.json
+db.json
 
 # production
 /build
