@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 async function getAllLists () {
   let lists = await fetch('http://localhost:3010/lists')
   lists = await lists.json()
@@ -42,7 +44,8 @@ async function updateIsDone (id) {
       due: todo.due,
       isDone: !todo.isDone,
       list: todo.list,
-      tags: todo.tags
+      tags: todo.tags,
+      last_modified: todo.last_modified
     })
   }
   await fetch(`http://localhost:3010/todos/${id}`, requestOptions)
@@ -54,14 +57,18 @@ async function updateTodo (todo) {
     due: todo.due,
     isDone: todo.isDone,
     list: todo.list,
-    tags: todo.tags
+    tags: todo.tags,
+    last_modified: moment().format('YYYY-MM-DDTHH:mm')
   }
   const requestOptions = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(obj)
   }
-  const result = await fetch(`http://localhost:3010/todos/${todo.id}`, requestOptions)
+  const result = await fetch(
+    `http://localhost:3010/todos/${todo.id}`,
+    requestOptions
+  )
   return await result.json()
 }
 
@@ -73,4 +80,4 @@ const functions = {
   deleteTodo: deleteTodo,
   updateTodo: updateTodo
 }
-module.exports = functions
+export default functions

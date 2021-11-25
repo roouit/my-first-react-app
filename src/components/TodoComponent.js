@@ -1,6 +1,6 @@
 import './TodoComponent.css'
 import moment from 'moment'
-import { updateIsDone } from './database'
+import db from './database'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
@@ -22,7 +22,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
   }
 
   const handleUpdateIsDone = async () => {
-    await updateIsDone(todo.id)
+    await db.updateIsDone(todo.id)
     setIsDone(!isDone)
   }
 

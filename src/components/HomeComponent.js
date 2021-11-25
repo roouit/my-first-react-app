@@ -2,6 +2,7 @@ import './HomeComponent.css'
 import TodoListComponent from './TodoListComponent'
 import { DragDropContext } from 'react-beautiful-dnd'
 import db from './database'
+import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 // import FullCalendar from '@fullcalendar/react'
 // import dayGridPlugin from '@fullcalendar/daygrid'
@@ -10,6 +11,7 @@ const HomeComponent = () => {
   const [listData, setListData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [filters, setFilters] = useState([])
+  const [sortByLastModified, setSortByLastModified] = useState(false)
 
   useEffect(() => {
     async function f () {
@@ -30,11 +32,33 @@ const HomeComponent = () => {
         listData.todos[todoId] = todo
         listData.lists['tehtävät'].todoIds.push(todoId)
       })
+      console.log(listData)
       setListData(listData)
       setIsLoaded(true)
     }
     f()
   }, [])
+
+  const getSortedTodoList = () => {
+    const sortedArray = listData.lists['tehtävät'].todoIds.sort(
+      (a, b) =>
+        moment(listData.todos[b].last_modified).valueOf() -
+        moment(listData.todos[a].last_modified).valueOf()
+    )
+    const newListData = {
+      ...listData
+    }
+    newListData.lists['tehtävät'].todoIds = sortedArray
+    return newListData
+  }
+
+  const handleSortTodos = () => {
+    if (sortByLastModified === false) {
+      const newListData = getSortedTodoList()
+      setListData(newListData)
+    }
+    setSortByLastModified(!sortByLastModified)
+  }
 
   const handleAddTodo = async (e) => {
     e.preventDefault()
@@ -43,7 +67,8 @@ const HomeComponent = () => {
       due: null,
       list: null,
       isDone: false,
-      tags: []
+      tags: [],
+      last_modified: moment().format('YYYY-MM-DDTHH:mm')
     }
     e.target.todoText.value = ''
     const newTodo = await db.addTodo(newTodoData)
@@ -51,11 +76,17 @@ const HomeComponent = () => {
       ...listData
     }
     const keys = Object.keys(listData.todos)
-    const lastTodoIdNum = Number(keys[keys.length - 1].split('-')[1])
+    const lastTodoIdNum = keys.length !== 0
+      ? Number(keys[keys.length - 1].split('-')[1])
+      : -1
     const newTodoId = `todo-${lastTodoIdNum + 1}`
     newListData.todos[newTodoId] = newTodo
     newListData.lists['tehtävät'].todoIds.push(newTodoId)
     setListData(newListData)
+    if (sortByLastModified) {
+      const sortedListData = getSortedTodoList()
+      setListData(sortedListData)
+    }
   }
 
   const handleAddFilters = (e) => {
@@ -100,6 +131,10 @@ const HomeComponent = () => {
     })
     newListData.todos[todoIdToEdit] = newTodo
     setListData(newListData)
+    if (sortByLastModified) {
+      const sortedListData = getSortedTodoList()
+      setListData(sortedListData)
+    }
   }
 
   const onDragEnd = (result) => {
@@ -119,7 +154,19 @@ const HomeComponent = () => {
     <div className='home-wrapper'>
       <div className='todos-today'>
         <h1>Tehtävät</h1>
-        <form className='filter-todos-form' onSubmit={(e) => handleAddFilters(e)}>
+        <label>
+          <input
+            className='todo-isdone'
+            type='checkbox'
+            defaultChecked={sortByLastModified}
+            onChange={() => handleSortTodos()}
+          ></input>
+          Järjestä automaattisesti muokkausajan mukaan
+        </label>
+        <form
+          className='filter-todos-form'
+          onSubmit={(e) => handleAddFilters(e)}
+        >
           <input
             type='text'
             name='todoFilters'
@@ -128,10 +175,11 @@ const HomeComponent = () => {
           ></input>
         </form>
         <div>
-          {filters.map(filter => {
+          {filters.map((filter) => {
             return (
               <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
-                {filter}<br></br>
+                {filter}
+                <br></br>
               </span>
             )
           })}
