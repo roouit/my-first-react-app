@@ -3,8 +3,8 @@ import TodoListComponent from './TodoListComponent'
 import { DragDropContext } from 'react-beautiful-dnd'
 import db from './database'
 import React, { useState, useEffect } from 'react'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
+// import FullCalendar from '@fullcalendar/react'
+// import dayGridPlugin from '@fullcalendar/daygrid'
 
 const HomeComponent = () => {
   const [listData, setListData] = useState([])
@@ -163,7 +163,7 @@ const HomeComponent = () => {
               )}
         </DragDropContext>
       </div>
-      <div className='calendar'>
+      {/* <div className='calendar'>
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView='dayGridWeek'
@@ -173,7 +173,7 @@ const HomeComponent = () => {
             { title: 'Treenit', date: '2021-12-01' }
           ]}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

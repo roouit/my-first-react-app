@@ -14,15 +14,24 @@ const TodoListComponent = ({ data, listName, filters, deleteTodo, editTodo }) =>
   }
 
   const getFilteredTodos = () => {
+    const filteredTodoIds = []
     const tagFilters = filters
       .filter(item => item.startsWith('#'))
       .map(tag => tag.substring(1))
-    // const textFilters = filters.filter((item) => !item.startsWith('#'))
-    const filteredTodoIds = tagFilters.length !== 0
-      ? data.lists['tehtävät'].todoIds.filter((todoId) => {
-        return data.todos[todoId].tags.some((tag) => tagFilters.includes(tag))
+    const textFilters = filters.filter((item) => !item.startsWith('#'))
+    if (filters.length !== 0) {
+      data.lists['tehtävät'].todoIds.forEach((todoId) => {
+        const tags = data.todos[todoId].tags
+        const text = data.todos[todoId].text
+        if (tags.some((tag) => tagFilters.includes(tag))) {
+          filteredTodoIds.push(todoId)
+        } else if (textFilters.some((filter) => text.toLowerCase().includes(filter.toLowerCase()))) {
+          filteredTodoIds.push(todoId)
+        }
       })
-      : data.lists['tehtävät'].todoIds
+    } else {
+      return data.lists['tehtävät'].todoIds
+    }
     return filteredTodoIds
   }
 

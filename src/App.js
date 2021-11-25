@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import NavComponent from './components/NavComponent'
+// import NavComponent from './components/NavComponent'
 import { Routes, Route } from 'react-router-dom'
 import HomeComponent from './components/HomeComponent'
 import InfoComponent from './components/InfoComponent'
@@ -8,7 +8,7 @@ import InfoComponent from './components/InfoComponent'
 const App = () => {
   return (
     <div className="App">
-      <NavComponent />
+      {/* <NavComponent /> */}
       <div className="content">
         <Routes>
           <Route path="/" element={<HomeComponent />} />
