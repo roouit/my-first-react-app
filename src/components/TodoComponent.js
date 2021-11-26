@@ -3,12 +3,10 @@ import moment from 'moment'
 import db from './database'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
-import { selectLists } from '../features/listSlice'
 import { Draggable } from 'react-beautiful-dnd'
+import { connect } from 'react-redux'
 
-const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
-  const lists = useSelector(selectLists)
+const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId, lists }) => {
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
   const [tags, setTags] = useState(todo.tags)
@@ -18,7 +16,8 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
     deleteTodo: PropTypes.func.isRequired,
     editTodo: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
-    todoId: PropTypes.string.isRequired
+    todoId: PropTypes.string.isRequired,
+    lists: PropTypes.array.isRequired
   }
 
   const handleUpdateIsDone = async () => {
@@ -94,7 +93,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
             className='edit-todo-list'
           >
             {lists.map((list) => (
-              <option key={list.id.toString()} value={list.name.toLowerCase()}>
+              <option key={list.name} value={list.name.toLowerCase()}>
                 {list.name}
               </option>
             ))}
@@ -180,4 +179,10 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId }) => {
       )
 }
 
-export default TodoComponent
+const mapStateToProps = (state) => {
+  return {
+    lists: state.lists
+  }
+}
+
+export default connect(mapStateToProps)(TodoComponent)
