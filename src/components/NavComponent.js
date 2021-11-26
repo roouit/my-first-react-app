@@ -1,11 +1,11 @@
 import React from 'react'
 import './NavComponent.css'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectLists } from '../features/listSlice'
+// import { useSelector } from 'react-redux'
+// import { selectLists } from '../features/listSlice'
 
 const NavComponent = () => {
-  const lists = useSelector(selectLists)
+  // const lists = useSelector(selectLists)
   return (
     <div className="navigation">
       <Link to="/">
@@ -23,7 +23,7 @@ const NavComponent = () => {
           Listat
         </Link>
       </div>
-      {lists.map(list => <Link key={list.id.toString()} className="list-link" to={`/listat/${list.name.toLowerCase()}`}>{list.name}</Link>)}
+      {/* {lists.map(list => <Link key={list.id.toString()} className="list-link" to={`/listat/${list.name.toLowerCase()}`}>{list.name}</Link>)} */}
       {/* <div className="link-element">
         <img
           className="link-icon"

@@ -5,19 +5,23 @@ import { Routes, Route } from 'react-router-dom'
 import HomeComponent from './components/HomeComponent'
 import InfoComponent from './components/InfoComponent'
 import ListViewComponent from './components/ListViewComponent'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
 const App = () => {
   return (
-    <div className='App'>
-      <NavComponent />
-      <div className='content'>
-        <Routes>
-          <Route path='/' element={<HomeComponent />} />
-          <Route path='/listat' element={<ListViewComponent />} />
-          <Route path='/tietoa' element={<InfoComponent />} />
-        </Routes>
+    <Provider store={store}>
+      <div className='App'>
+        <NavComponent />
+        <div className='content'>
+          <Routes>
+            <Route path='/' element={<HomeComponent />} />
+            <Route path='/listat' element={<ListViewComponent />} />
+            <Route path='/tietoa' element={<InfoComponent />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Provider>
   )
 }
 
