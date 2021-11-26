@@ -58,7 +58,7 @@ async function updateTodo (todo) {
     isDone: todo.isDone,
     list: todo.list,
     tags: todo.tags,
-    last_modified: moment().format('YYYY-MM-DDTHH:mm')
+    last_modified: moment().format('YYYY-MM-DDTHH:mm:ss')
   }
   const requestOptions = {
     method: 'PUT',

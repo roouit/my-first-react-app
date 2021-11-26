@@ -68,7 +68,7 @@ const HomeComponent = () => {
       list: null,
       isDone: false,
       tags: [],
-      last_modified: moment().format('YYYY-MM-DDTHH:mm')
+      last_modified: moment().format('YYYY-MM-DDTHH:mm:ss')
     }
     e.target.todoText.value = ''
     const newTodo = await db.addTodo(newTodoData)
