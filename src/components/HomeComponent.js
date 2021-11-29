@@ -48,13 +48,13 @@ const HomeComponent = () => {
   }, [])
 
   const getSortedTodoList = () => {
-    const sortedArray = listDataOld.lists['tehtävät'].todoIds.sort(
+    const sortedArray = listData.lists['tehtävät'].todoIds.sort(
       (a, b) =>
-        moment(listDataOld.todos[b].last_modified).valueOf() -
-        moment(listDataOld.todos[a].last_modified).valueOf()
+        moment(listData.todos[b].last_modified).valueOf() -
+        moment(listData.todos[a].last_modified).valueOf()
     )
     const newListData = {
-      ...listDataOld
+      ...listData
     }
     newListData.lists['tehtävät'].todoIds = sortedArray
     return newListData
@@ -63,7 +63,7 @@ const HomeComponent = () => {
   const handleSortTodos = () => {
     if (sortByLastModified === false) {
       const newListData = getSortedTodoList()
-      setListData(newListData)
+      dispatch(updateTodo(newListData))
     }
     setSortByLastModified(!sortByLastModified)
   }
