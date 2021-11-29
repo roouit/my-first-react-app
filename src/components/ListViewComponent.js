@@ -1,19 +1,16 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { addList } from '../redux'
-import PropTypes from 'prop-types'
 
-function ListViewComponent (props) {
-  ListViewComponent.propTypes = {
-    lists: PropTypes.array.isRequired,
-    addList: PropTypes.func.isRequired
-  }
+function ListViewComponent () {
+  const lists = useSelector(state => state.list.lists)
+  const dispatch = useDispatch()
 
   const handleAddList = e => {
     e.preventDefault()
     const newListName = e.target.newListText.value
-    if (!props.lists.map(item => item.name).includes(newListName)) {
-      props.addList(newListName)
+    if (!lists.map(item => item.name).includes(newListName)) {
+      dispatch(addList(newListName))
       e.target.newListText.value = ''
     } else {
       alert('Kyseinen lista on jo olemassa!')
@@ -23,7 +20,7 @@ function ListViewComponent (props) {
   return (
     <div className='list-view-wrapper'>
       <h1>Listat</h1>
-      {props.lists.map((list) => (
+      {lists.map((list) => (
         <span key={list.name}>{list.name}</span>
       ))}
       <form onSubmit={(e) => handleAddList(e)}>
@@ -33,16 +30,4 @@ function ListViewComponent (props) {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lists: state.lists
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addList: (data) => dispatch(addList(data))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListViewComponent)
+export default ListViewComponent
