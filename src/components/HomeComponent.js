@@ -4,16 +4,25 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import db from './database'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchTodos } from '../redux'
 // import FullCalendar from '@fullcalendar/react'
 // import dayGridPlugin from '@fullcalendar/daygrid'
 
 const HomeComponent = () => {
   const [listData, setListData] = useState([])
+  // eslint-disable-next-line no-unused-vars
   const [isLoaded, setIsLoaded] = useState(false)
   const [filters, setFilters] = useState([])
   const [sortByLastModified, setSortByLastModified] = useState(false)
+  const listData2 = useSelector(state => state.todo)
+  const dispatch = useDispatch()
+
+  console.log(listData)
+  console.log(listData2)
 
   useEffect(() => {
+    dispatch(fetchTodos())
     async function f () {
       const todos = await db.getAllTodos()
       const listData = {
@@ -156,7 +165,7 @@ const HomeComponent = () => {
         <h1>Tehtävät</h1>
         <label>
           <input
-            className='todo-isdone'
+            className='todo-sort-by-edit'
             type='checkbox'
             defaultChecked={sortByLastModified}
             onChange={() => handleSortTodos()}
@@ -199,7 +208,7 @@ const HomeComponent = () => {
           {isLoaded
             ? (
             <TodoListComponent
-              data={listData}
+              data={listData2}
               listName='tehtävät'
               filters={filters}
               deleteTodo={deleteTodo}
