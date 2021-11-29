@@ -1,47 +1,21 @@
-import './HomeComponent.css'
-import TodoListComponent from './TodoListComponent'
-import { DragDropContext } from 'react-beautiful-dnd'
-import db from './database'
-import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchTodos, updateTodo, addTodo } from '../redux'
-// import FullCalendar from '@fullcalendar/react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
+import TodoListComponent from './TodoListComponent'
+import './HomeComponent.css'
+import moment from 'moment'
+import { DragDropContext } from 'react-beautiful-dnd'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
 const HomeComponent = () => {
-  const [listDataOld, setListData] = useState([])
-  // eslint-disable-next-line no-unused-vars
-  const [isLoaded, setIsLoaded] = useState(false)
   const [filters, setFilters] = useState([])
   const [sortByLastModified, setSortByLastModified] = useState(false)
-  const listData = useSelector(state => state.todo)
+  const listData = useSelector((state) => state.todo)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchTodos())
-    async function f () {
-      const todos = await db.getAllTodos()
-      const listDataOld = {
-        todos: {},
-        lists: {
-          tehtävät: {
-            id: 'tehtävät',
-            title: 'All todos',
-            todoIds: []
-          }
-        },
-        listOrder: ['tehtävät']
-      }
-      todos.forEach((todo, index) => {
-        const todoId = `todo-${index}`
-        listDataOld.todos[todoId] = todo
-        listDataOld.lists['tehtävät'].todoIds.push(todoId)
-      })
-      setListData(listDataOld)
-      setIsLoaded(true)
-    }
-    f()
   }, [])
 
   const getSortedTodoList = () => {
@@ -89,22 +63,6 @@ const HomeComponent = () => {
       return filter !== e.target.textContent
     })
     setFilters(newFilters)
-  }
-
-  const editTodo = async (todo) => {
-    const newListData = {
-      ...listDataOld
-    }
-    const newTodo = await db.updateTodo(todo)
-    const todoIdToEdit = Object.keys(listDataOld.todos).find((key) => {
-      return listDataOld.todos[key].id === newTodo.id
-    })
-    newListData.todos[todoIdToEdit] = newTodo
-    setListData(newListData)
-    if (sortByLastModified) {
-      const sortedListData = getSortedTodoList()
-      setListData(sortedListData)
-    }
   }
 
   const onDragEnd = (result) => {
@@ -166,13 +124,12 @@ const HomeComponent = () => {
           </span>
         </form>
         <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-          {isLoaded
+          {!listData.loading
             ? (
             <TodoListComponent
               data={listData}
               listName='tehtävät'
               filters={filters}
-              editTodo={editTodo}
             />
               )
             : (
@@ -180,7 +137,7 @@ const HomeComponent = () => {
               )}
         </DragDropContext>
       </div>
-      {/* <div className='calendar'>
+      <div className='calendar'>
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView='dayGridWeek'
@@ -190,7 +147,7 @@ const HomeComponent = () => {
             { title: 'Treenit', date: '2021-12-01' }
           ]}
         />
-      </div> */}
+      </div>
     </div>
   )
 }

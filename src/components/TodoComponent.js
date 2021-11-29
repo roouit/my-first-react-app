@@ -4,10 +4,10 @@ import db from './database'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Draggable } from 'react-beautiful-dnd'
-import { connect, useDispatch } from 'react-redux'
-import { deleteTodo } from '../redux'
+import { useDispatch } from 'react-redux'
+import { deleteTodo, editTodo } from '../redux'
 
-const TodoComponent = ({ todo, editTodo, index, todoId, lists }) => {
+const TodoComponent = ({ todo, index, todoId, lists }) => {
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
   const [tags, setTags] = useState(todo.tags)
@@ -15,10 +15,9 @@ const TodoComponent = ({ todo, editTodo, index, todoId, lists }) => {
 
   TodoComponent.propTypes = {
     todo: PropTypes.object.isRequired,
-    editTodo: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
     todoId: PropTypes.string.isRequired,
-    lists: PropTypes.array.isRequired
+    lists: PropTypes.object.isRequired
   }
 
   const handleUpdateIsDone = async () => {
@@ -29,14 +28,7 @@ const TodoComponent = ({ todo, editTodo, index, todoId, lists }) => {
   const handleSubmit = e => {
     e.preventDefault()
     if (e.target.todoTags.value === '') {
-      editTodo({
-        id: todo.id,
-        text: e.target.todoText.value,
-        due: e.target.todoDue.value,
-        list: e.target.todoList.value,
-        isDone: todo.isDone,
-        tags: tags
-      })
+      dispatch(editTodo(todo, tags, e))
       setEditView(!editView)
     } else {
       e.target.todoTags.value = ''
@@ -93,7 +85,7 @@ const TodoComponent = ({ todo, editTodo, index, todoId, lists }) => {
             name='todoList'
             className='edit-todo-list'
           >
-            {lists.map((list) => (
+            {lists.lists.map((list) => (
               <option key={list.name} value={list.name.toLowerCase()}>
                 {list.name}
               </option>
@@ -184,10 +176,4 @@ const TodoComponent = ({ todo, editTodo, index, todoId, lists }) => {
       )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lists: state.lists
-  }
-}
-
-export default connect(mapStateToProps)(TodoComponent)
+export default TodoComponent

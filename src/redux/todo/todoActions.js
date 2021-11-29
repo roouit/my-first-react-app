@@ -1,5 +1,4 @@
 import {
-  EDIT_TODO,
   UPDATE_TODO,
   FETCH_TODOS_REQUEST,
   FETCH_TODOS_SUCCESS,
@@ -7,15 +6,6 @@ import {
 } from './todoTypes'
 import db from '../../components/database'
 import moment from 'moment'
-
-export const editTodo = (data) => {
-  return {
-    type: EDIT_TODO,
-    payload: {
-      name: data
-    }
-  }
-}
 
 export const updateTodo = (newTodoState) => {
   return {
@@ -106,5 +96,27 @@ export const deleteTodo = (id) => {
     )
     dispatch(updateTodo(newListData))
     await db.deleteTodo(id)
+  }
+}
+
+export const editTodo = (todo, tags, e) => {
+  return async (dispatch, getState) => {
+    const todoState = getState().todo
+    const newListData = {
+      ...todoState
+    }
+    const newTodo = await db.updateTodo({
+      id: todo.id,
+      text: e.target.todoText.value,
+      due: e.target.todoDue.value,
+      list: e.target.todoList.value,
+      isDone: todo.isDone,
+      tags: tags
+    })
+    const todoIdToEdit = Object.keys(todoState.todos).find((key) => {
+      return todoState.todos[key].id === newTodo.id
+    })
+    newListData.todos[todoIdToEdit] = newTodo
+    dispatch(updateTodo(newListData))
   }
 }

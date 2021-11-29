@@ -1,5 +1,4 @@
 import {
-  EDIT_TODO,
   UPDATE_TODO,
   FETCH_TODOS_REQUEST,
   FETCH_TODOS_SUCCESS,
@@ -47,11 +46,6 @@ const listReducer = (state = initialState, action) => {
         loading: false,
         todos: {},
         error: action.payload
-      }
-    case EDIT_TODO:
-      return {
-        ...state
-        // EDIT
       }
     case UPDATE_TODO:
       return action.payload
