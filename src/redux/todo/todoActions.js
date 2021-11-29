@@ -2,6 +2,7 @@ import {
   ADD_TODO,
   DELETE_TODO,
   EDIT_TODO,
+  UPDATE_TODO,
   FETCH_TODOS_REQUEST,
   FETCH_TODOS_SUCCESS,
   FETCH_TODOS_FAILURE
@@ -32,6 +33,13 @@ export const editTodo = (data) => {
     payload: {
       name: data
     }
+  }
+}
+
+export const updateTodo = (newTodoState) => {
+  return {
+    type: UPDATE_TODO,
+    payload: newTodoState
   }
 }
 

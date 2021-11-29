@@ -2,6 +2,7 @@ import {
   ADD_TODO,
   DELETE_TODO,
   EDIT_TODO,
+  UPDATE_TODO,
   FETCH_TODOS_REQUEST,
   FETCH_TODOS_SUCCESS,
   FETCH_TODOS_FAILURE
@@ -64,6 +65,8 @@ const listReducer = (state = initialState, action) => {
         ...state
         // EDIT
       }
+    case UPDATE_TODO:
+      return action.payload
     default:
       return state
   }

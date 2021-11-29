@@ -5,27 +5,27 @@ import db from './database'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchTodos } from '../redux'
+import { fetchTodos, updateTodo } from '../redux'
 // import FullCalendar from '@fullcalendar/react'
 // import dayGridPlugin from '@fullcalendar/daygrid'
 
 const HomeComponent = () => {
-  const [listData, setListData] = useState([])
+  const [listDataOld, setListData] = useState([])
   // eslint-disable-next-line no-unused-vars
   const [isLoaded, setIsLoaded] = useState(false)
   const [filters, setFilters] = useState([])
   const [sortByLastModified, setSortByLastModified] = useState(false)
-  const listData2 = useSelector(state => state.todo)
+  const listData = useSelector(state => state.todo)
   const dispatch = useDispatch()
 
+  console.log(listDataOld)
   console.log(listData)
-  console.log(listData2)
 
   useEffect(() => {
     dispatch(fetchTodos())
     async function f () {
       const todos = await db.getAllTodos()
-      const listData = {
+      const listDataOld = {
         todos: {},
         lists: {
           tehtävät: {
@@ -38,24 +38,23 @@ const HomeComponent = () => {
       }
       todos.forEach((todo, index) => {
         const todoId = `todo-${index}`
-        listData.todos[todoId] = todo
-        listData.lists['tehtävät'].todoIds.push(todoId)
+        listDataOld.todos[todoId] = todo
+        listDataOld.lists['tehtävät'].todoIds.push(todoId)
       })
-      console.log(listData)
-      setListData(listData)
+      setListData(listDataOld)
       setIsLoaded(true)
     }
     f()
   }, [])
 
   const getSortedTodoList = () => {
-    const sortedArray = listData.lists['tehtävät'].todoIds.sort(
+    const sortedArray = listDataOld.lists['tehtävät'].todoIds.sort(
       (a, b) =>
-        moment(listData.todos[b].last_modified).valueOf() -
-        moment(listData.todos[a].last_modified).valueOf()
+        moment(listDataOld.todos[b].last_modified).valueOf() -
+        moment(listDataOld.todos[a].last_modified).valueOf()
     )
     const newListData = {
-      ...listData
+      ...listDataOld
     }
     newListData.lists['tehtävät'].todoIds = sortedArray
     return newListData
@@ -82,9 +81,9 @@ const HomeComponent = () => {
     e.target.todoText.value = ''
     const newTodo = await db.addTodo(newTodoData)
     const newListData = {
-      ...listData
+      ...listDataOld
     }
-    const keys = Object.keys(listData.todos)
+    const keys = Object.keys(listDataOld.todos)
     const lastTodoIdNum = keys.length !== 0
       ? Number(keys[keys.length - 1].split('-')[1])
       : -1
@@ -115,15 +114,15 @@ const HomeComponent = () => {
 
   const deleteTodo = async (id) => {
     const newListData = {
-      ...listData
+      ...listDataOld
     }
-    const todoIdToDelete = Object.keys(listData.todos).find((key) => {
-      return listData.todos[key].id === id
+    const todoIdToDelete = Object.keys(listDataOld.todos).find((key) => {
+      return listDataOld.todos[key].id === id
     })
     delete newListData.todos[todoIdToDelete]
-    newListData.lists['tehtävät'].todoIds = Object.keys(listData.todos).filter(
+    newListData.lists['tehtävät'].todoIds = Object.keys(listDataOld.todos).filter(
       (key) => {
-        return listData.todos[key].id !== id
+        return listDataOld.todos[key].id !== id
       }
     )
     setListData(newListData)
@@ -132,11 +131,11 @@ const HomeComponent = () => {
 
   const editTodo = async (todo) => {
     const newListData = {
-      ...listData
+      ...listDataOld
     }
     const newTodo = await db.updateTodo(todo)
-    const todoIdToEdit = Object.keys(listData.todos).find((key) => {
-      return listData.todos[key].id === newTodo.id
+    const todoIdToEdit = Object.keys(listDataOld.todos).find((key) => {
+      return listDataOld.todos[key].id === newTodo.id
     })
     newListData.todos[todoIdToEdit] = newTodo
     setListData(newListData)
@@ -156,7 +155,7 @@ const HomeComponent = () => {
       ...listData
     }
     newListData.lists[source.droppableId].todoIds = newTodoIds
-    setListData(newListData)
+    dispatch(updateTodo(newListData))
   }
 
   return (
@@ -208,7 +207,7 @@ const HomeComponent = () => {
           {isLoaded
             ? (
             <TodoListComponent
-              data={listData2}
+              data={listData}
               listName='tehtävät'
               filters={filters}
               deleteTodo={deleteTodo}
