@@ -1,5 +1,4 @@
 import {
-  DELETE_TODO,
   EDIT_TODO,
   UPDATE_TODO,
   FETCH_TODOS_REQUEST,
@@ -8,15 +7,6 @@ import {
 } from './todoTypes'
 import db from '../../components/database'
 import moment from 'moment'
-
-export const deleteTodo = (data) => {
-  return {
-    type: DELETE_TODO,
-    payload: {
-      name: data
-    }
-  }
-}
 
 export const editTodo = (data) => {
   return {
@@ -96,5 +86,25 @@ export const addTodo = (newText, listData) => {
     newListData.todos[newTodoId] = newTodo
     newListData.lists['tehtävät'].todoIds.push(newTodoId)
     dispatch(updateTodo(newListData))
+  }
+}
+
+export const deleteTodo = (id) => {
+  return async (dispatch, getState) => {
+    const todoState = getState().todo
+    const newListData = {
+      ...todoState
+    }
+    const todoIdToDelete = Object.keys(todoState.todos).find((key) => {
+      return todoState.todos[key].id === id
+    })
+    delete newListData.todos[todoIdToDelete]
+    newListData.lists['tehtävät'].todoIds = Object.keys(todoState.todos).filter(
+      (key) => {
+        return todoState.todos[key].id !== id
+      }
+    )
+    dispatch(updateTodo(newListData))
+    await db.deleteTodo(id)
   }
 }

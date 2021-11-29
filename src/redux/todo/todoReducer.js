@@ -1,6 +1,4 @@
 import {
-  ADD_TODO,
-  DELETE_TODO,
   EDIT_TODO,
   UPDATE_TODO,
   FETCH_TODOS_REQUEST,
@@ -49,16 +47,6 @@ const listReducer = (state = initialState, action) => {
         loading: false,
         todos: {},
         error: action.payload
-      }
-    case ADD_TODO:
-      return {
-        ...state
-        // ADD
-      }
-    case DELETE_TODO:
-      return {
-        ...state
-        // DELETE
       }
     case EDIT_TODO:
       return {

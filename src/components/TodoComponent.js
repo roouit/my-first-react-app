@@ -4,16 +4,17 @@ import db from './database'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Draggable } from 'react-beautiful-dnd'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
+import { deleteTodo } from '../redux'
 
-const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId, lists }) => {
+const TodoComponent = ({ todo, editTodo, index, todoId, lists }) => {
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
   const [tags, setTags] = useState(todo.tags)
+  const dispatch = useDispatch()
 
   TodoComponent.propTypes = {
     todo: PropTypes.object.isRequired,
-    deleteTodo: PropTypes.func.isRequired,
     editTodo: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
     todoId: PropTypes.string.isRequired,
@@ -111,7 +112,11 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId, lists }) => 
         </label>
         {tags
           ? tags.map((tag) => {
-            return <span key={tag} onClick={(e) => handleRemoveTag(e)}>#{tag}</span>
+            return (
+                <span key={tag} onClick={(e) => handleRemoveTag(e)}>
+                  #{tag}
+                </span>
+            )
           })
           : ''}
         <span>
@@ -128,7 +133,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId, lists }) => 
         className='todo-delete-button'
         src='delete-bin-fill.png'
         alt='poista ikoni'
-        onClick={() => deleteTodo(todo.id)}
+        onClick={() => dispatch(deleteTodo(todo.id))}
       ></img>
       <img
         className='todo-edit-button'
@@ -165,7 +170,7 @@ const TodoComponent = ({ todo, deleteTodo, editTodo, index, todoId, lists }) => 
             className='todo-delete-button'
             src='delete-bin-fill.png'
             alt='poista ikoni'
-            onClick={() => deleteTodo(todo.id)}
+            onClick={() => dispatch(deleteTodo(todo.id))}
           ></img>
           <img
             className='todo-edit-button'

@@ -18,9 +18,6 @@ const HomeComponent = () => {
   const listData = useSelector(state => state.todo)
   const dispatch = useDispatch()
 
-  console.log(listDataOld)
-  console.log(listData)
-
   useEffect(() => {
     dispatch(fetchTodos())
     async function f () {
@@ -72,6 +69,7 @@ const HomeComponent = () => {
     e.preventDefault()
     dispatch(addTodo(e.target.todoText.value, listData))
     e.target.todoText.value = ''
+    // TO FIX
     // if (sortByLastModified) {
     //   const sortedListData = getSortedTodoList()
     //   setListData(sortedListData)
@@ -91,23 +89,6 @@ const HomeComponent = () => {
       return filter !== e.target.textContent
     })
     setFilters(newFilters)
-  }
-
-  const deleteTodo = async (id) => {
-    const newListData = {
-      ...listDataOld
-    }
-    const todoIdToDelete = Object.keys(listDataOld.todos).find((key) => {
-      return listDataOld.todos[key].id === id
-    })
-    delete newListData.todos[todoIdToDelete]
-    newListData.lists['tehtävät'].todoIds = Object.keys(listDataOld.todos).filter(
-      (key) => {
-        return listDataOld.todos[key].id !== id
-      }
-    )
-    setListData(newListData)
-    await db.deleteTodo(id)
   }
 
   const editTodo = async (todo) => {
@@ -191,7 +172,6 @@ const HomeComponent = () => {
               data={listData}
               listName='tehtävät'
               filters={filters}
-              deleteTodo={deleteTodo}
               editTodo={editTodo}
             />
               )

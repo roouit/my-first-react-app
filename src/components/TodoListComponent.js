@@ -4,12 +4,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Droppable } from 'react-beautiful-dnd'
 
-const TodoListComponent = ({ data, listName, filters, deleteTodo, editTodo }) => {
+const TodoListComponent = ({ data, listName, filters, editTodo }) => {
   TodoListComponent.propTypes = {
     data: PropTypes.object.isRequired,
     listName: PropTypes.string.isRequired,
     filters: PropTypes.array.isRequired,
-    deleteTodo: PropTypes.func.isRequired,
     editTodo: PropTypes.func.isRequired
   }
 
@@ -51,7 +50,6 @@ const TodoListComponent = ({ data, listName, filters, deleteTodo, editTodo }) =>
                     index={index}
                     todoId={todoId}
                     todo={data.todos[todoId]}
-                    deleteTodo={deleteTodo}
                     editTodo={editTodo}
                   />
               )
