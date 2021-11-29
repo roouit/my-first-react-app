@@ -1,5 +1,4 @@
 import {
-  ADD_TODO,
   DELETE_TODO,
   EDIT_TODO,
   UPDATE_TODO,
@@ -8,15 +7,7 @@ import {
   FETCH_TODOS_FAILURE
 } from './todoTypes'
 import db from '../../components/database'
-
-export const addTodo = (data) => {
-  return {
-    type: ADD_TODO,
-    payload: {
-      name: data
-    }
-  }
-}
+import moment from 'moment'
 
 export const deleteTodo = (data) => {
   return {
@@ -81,5 +72,29 @@ export const fetchTodos = () => {
     } catch (error) {
       dispatch(fetchTodosFailure(error))
     }
+  }
+}
+
+export const addTodo = (newText, listData) => {
+  return async (dispatch) => {
+    const newTodoData = {
+      text: newText,
+      due: null,
+      list: null,
+      isDone: false,
+      tags: [],
+      last_modified: moment().format('YYYY-MM-DDTHH:mm:ss')
+    }
+    const newTodo = await db.addTodo(newTodoData)
+    const newListData = {
+      ...listData
+    }
+    const keys = Object.keys(listData.todos)
+    const lastTodoIdNum =
+      keys.length !== 0 ? Number(keys[keys.length - 1].split('-')[1]) : -1
+    const newTodoId = `todo-${lastTodoIdNum + 1}`
+    newListData.todos[newTodoId] = newTodo
+    newListData.lists['tehtävät'].todoIds.push(newTodoId)
+    dispatch(updateTodo(newListData))
   }
 }

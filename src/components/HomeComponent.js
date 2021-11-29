@@ -5,7 +5,7 @@ import db from './database'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchTodos, updateTodo } from '../redux'
+import { fetchTodos, updateTodo, addTodo } from '../redux'
 // import FullCalendar from '@fullcalendar/react'
 // import dayGridPlugin from '@fullcalendar/daygrid'
 
@@ -68,33 +68,14 @@ const HomeComponent = () => {
     setSortByLastModified(!sortByLastModified)
   }
 
-  const handleAddTodo = async (e) => {
+  const handleAddTodo = (e) => {
     e.preventDefault()
-    const newTodoData = {
-      text: e.target.todoText.value,
-      due: null,
-      list: null,
-      isDone: false,
-      tags: [],
-      last_modified: moment().format('YYYY-MM-DDTHH:mm:ss')
-    }
+    dispatch(addTodo(e.target.todoText.value, listData))
     e.target.todoText.value = ''
-    const newTodo = await db.addTodo(newTodoData)
-    const newListData = {
-      ...listDataOld
-    }
-    const keys = Object.keys(listDataOld.todos)
-    const lastTodoIdNum = keys.length !== 0
-      ? Number(keys[keys.length - 1].split('-')[1])
-      : -1
-    const newTodoId = `todo-${lastTodoIdNum + 1}`
-    newListData.todos[newTodoId] = newTodo
-    newListData.lists['tehtävät'].todoIds.push(newTodoId)
-    setListData(newListData)
-    if (sortByLastModified) {
-      const sortedListData = getSortedTodoList()
-      setListData(sortedListData)
-    }
+    // if (sortByLastModified) {
+    //   const sortedListData = getSortedTodoList()
+    //   setListData(sortedListData)
+    // }
   }
 
   const handleAddFilters = (e) => {
