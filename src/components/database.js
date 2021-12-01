@@ -28,6 +28,16 @@ async function addTodo (data) {
   return await newTodo.json()
 }
 
+async function addList (data) {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }
+  const newTodo = await fetch('http://localhost:3010/lists', requestOptions)
+  return await newTodo.json()
+}
+
 async function deleteTodo (id) {
   await fetch(`http://localhost:3010/todos/${id}`, {
     method: 'DELETE'
@@ -76,6 +86,7 @@ const functions = {
   getAllLists: getAllLists,
   getAllTodos: getAllTodos,
   addTodo: addTodo,
+  addList: addList,
   updateIsDone: updateIsDone,
   deleteTodo: deleteTodo,
   updateTodo: updateTodo

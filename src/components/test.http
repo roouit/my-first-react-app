@@ -7,3 +7,11 @@ Content-Type: application/json
       "isDone": false,
       "list": "sekalaiset"
 }
+
+###
+POST http://localhost:3010/lists
+Content-Type: application/json
+
+{
+      "name": "testi"
+}

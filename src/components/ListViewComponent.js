@@ -26,6 +26,7 @@ function ListViewComponent () {
       alert('Kyseinen lista on jo olemassa!')
     }
   }
+
   const handleRemoveList = (e) => {
     dispatch(deleteList(e.target.innerText))
   }

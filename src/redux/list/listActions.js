@@ -1,5 +1,5 @@
 import {
-  ADD_LIST,
+  UPDATE_LIST,
   DELETE_LIST,
   FETCH_LISTS_REQUEST,
   FETCH_LISTS_SUCCESS,
@@ -27,12 +27,10 @@ const fetchListsFailure = (error) => {
   }
 }
 
-export const addList = (data) => {
+export const updateList = (lists) => {
   return {
-    type: ADD_LIST,
-    payload: {
-      name: data
-    }
+    type: UPDATE_LIST,
+    payload: lists
   }
 }
 
@@ -52,5 +50,19 @@ export const fetchLists = () => {
     } catch (error) {
       dispatch(fetchListsFailure(error))
     }
+  }
+}
+
+export const addList = (newList) => {
+  return async (dispatch, getState) => {
+    const listState = getState().list
+    const newListState = {
+      ...listState
+    }
+    const newListObject = await db.addList({
+      name: newList
+    })
+    newListState.lists.push(newListObject)
+    dispatch(updateList(newListState))
   }
 }

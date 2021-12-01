@@ -21,7 +21,6 @@ const TodoListComponent = ({ data, listName, filters }) => {
   }, [])
 
   const getFilteredTodos = () => {
-    console.log(listName)
     const filteredTodoIds = []
     const tagFilters = filters
       .filter(item => item.startsWith('#'))

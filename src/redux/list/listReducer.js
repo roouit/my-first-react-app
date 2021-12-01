@@ -1,5 +1,5 @@
 import {
-  ADD_LIST,
+  UPDATE_LIST,
   DELETE_LIST,
   FETCH_LISTS_REQUEST,
   FETCH_LISTS_SUCCESS,
@@ -31,10 +31,10 @@ const listReducer = (state = initialState, action) => {
         lists: [],
         error: action.payload
       }
-    case ADD_LIST:
+    case UPDATE_LIST:
       return {
         ...state,
-        lists: [...state.lists, action.payload]
+        lists: action.payload.lists
       }
     case DELETE_LIST:
       return {
