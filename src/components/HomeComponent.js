@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchTodos, updateTodo, addTodo } from '../redux'
+import { updateTodo, addTodo } from '../redux'
 import TodoListComponent from './TodoListComponent'
 import './HomeComponent.css'
 import moment from 'moment'
-import { DragDropContext } from 'react-beautiful-dnd'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
@@ -13,10 +12,6 @@ const HomeComponent = () => {
   const [sortByLastModified, setSortByLastModified] = useState(false)
   const listData = useSelector((state) => state.todo)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchTodos())
-  }, [])
 
   const getSortedTodoList = () => {
     const sortedArray = listData.lists['tehtävät'].todoIds.sort(
@@ -65,19 +60,6 @@ const HomeComponent = () => {
     setFilters(newFilters)
   }
 
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result
-    const list = listData.lists[source.droppableId]
-    const newTodoIds = Array.from(list.todoIds)
-    newTodoIds.splice(source.index, 1)
-    newTodoIds.splice(destination.index, 0, draggableId)
-    const newListData = {
-      ...listData
-    }
-    newListData.lists[source.droppableId].todoIds = newTodoIds
-    dispatch(updateTodo(newListData))
-  }
-
   return (
     <div className='home-wrapper'>
       <div className='todos-today'>
@@ -123,19 +105,17 @@ const HomeComponent = () => {
             <button className='add-todo-save-button'>Tallenna</button>
           </span>
         </form>
-        <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
           {!listData.loading
             ? (
             <TodoListComponent
               data={listData}
-              listName='tehtävät'
+              listName='all'
               filters={filters}
             />
               )
             : (
                 'Ladataan...'
               )}
-        </DragDropContext>
       </div>
       <div className='calendar'>
         <FullCalendar

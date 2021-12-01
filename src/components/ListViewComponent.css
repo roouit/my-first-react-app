@@ -1,4 +1,8 @@
-.list-view-wrapper {
+.list-view-header {
   display: flex;
   flex-direction: column;
+}
+
+.list-view-lists {
+  display: flex;
 }

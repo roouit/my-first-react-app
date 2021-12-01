@@ -6,16 +6,15 @@ import {
 } from './todoTypes'
 
 const initialState = {
-  loading: false,
+  loading: true,
   todos: {},
   lists: {
-    tehtävät: {
-      id: 'tehtävät',
-      title: 'All todos',
+    all: {
+      id: 'all',
       todoIds: []
     }
   },
-  listOrder: ['tehtävät'],
+  listOrder: ['all'],
   error: ''
 }
 
@@ -31,13 +30,7 @@ const listReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         todos: action.payload.todos,
-        lists: {
-          ...state.lists,
-          tehtävät: {
-            ...state.lists.tehtävät,
-            todoIds: action.payload.todoIds
-          }
-        },
+        lists: action.payload.lists,
         error: ''
       }
     case FETCH_TODOS_FAILURE:

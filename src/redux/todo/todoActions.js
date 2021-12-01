@@ -20,15 +20,33 @@ export const fetchTodosRequest = () => {
   }
 }
 
-const fetchTodosSuccess = (todos) => {
+const fetchTodosSuccess = (todos, lists) => {
   const todoData = {
     todos: {},
-    todoIds: []
+    lists: {
+      all: {
+        id: 'all',
+        todoIds: []
+      }
+    }
   }
+  lists.forEach((list) => {
+    todoData.lists[list.name.toLowerCase()] = {
+      id: list.name,
+      todoIds: []
+    }
+  })
   todos.forEach((todo, index) => {
     const todoId = `todo-${index}`
     todoData.todos[todoId] = todo
-    todoData.todoIds.push(todoId)
+    Object.keys(todoData.lists).forEach(listName => {
+      if (todo.list !== null) {
+        if (listName === todo.list.toLowerCase()) {
+          todoData.lists[listName].todoIds.push(todoId)
+        }
+      }
+    })
+    todoData.lists.all.todoIds.push(todoId)
   })
   return {
     type: FETCH_TODOS_SUCCESS,
@@ -48,7 +66,10 @@ export const fetchTodos = () => {
     dispatch(fetchTodosRequest())
     try {
       const todos = await db.getAllTodos()
-      dispatch(fetchTodosSuccess(todos))
+      const lists = await db.getAllLists()
+      dispatch(
+        fetchTodosSuccess(todos, lists)
+      )
     } catch (error) {
       dispatch(fetchTodosFailure(error))
     }
