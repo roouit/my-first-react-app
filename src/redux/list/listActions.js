@@ -1,6 +1,5 @@
 import {
   UPDATE_LIST,
-  DELETE_LIST,
   FETCH_LISTS_REQUEST,
   FETCH_LISTS_SUCCESS,
   FETCH_LISTS_FAILURE
@@ -34,13 +33,6 @@ export const updateList = (lists) => {
   }
 }
 
-export const deleteList = (listName) => {
-  return {
-    type: DELETE_LIST,
-    payload: listName
-  }
-}
-
 export const fetchLists = () => {
   return async (dispatch) => {
     dispatch(fetchListsRequest())
@@ -64,5 +56,22 @@ export const addList = (newList) => {
     })
     newListState.lists.push(newListObject)
     dispatch(updateList(newListState))
+  }
+}
+
+export const deleteList = (listName) => {
+  return async (dispatch, getState) => {
+    const currentState = getState().list
+    const listItemToDel = currentState.lists.find(
+      (listItem) => listItem.name === listName
+    )
+    const newState = {
+      ...currentState,
+      lists: currentState.lists.filter(
+        (list) => list.name !== listItemToDel.name
+      )
+    }
+    await db.deleteList(listItemToDel.id)
+    dispatch(updateList(newState))
   }
 }

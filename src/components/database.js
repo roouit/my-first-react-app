@@ -44,6 +44,12 @@ async function deleteTodo (id) {
   })
 }
 
+async function deleteList (id) {
+  await fetch(`http://localhost:3010/lists/${id}`, {
+    method: 'DELETE'
+  })
+}
+
 async function updateIsDone (id) {
   const todo = await getById(id)
   const requestOptions = {
@@ -89,6 +95,7 @@ const functions = {
   addList: addList,
   updateIsDone: updateIsDone,
   deleteTodo: deleteTodo,
+  deleteList: deleteList,
   updateTodo: updateTodo
 }
 export default functions

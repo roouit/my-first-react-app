@@ -1,6 +1,5 @@
 import {
   UPDATE_LIST,
-  DELETE_LIST,
   FETCH_LISTS_REQUEST,
   FETCH_LISTS_SUCCESS,
   FETCH_LISTS_FAILURE
@@ -35,11 +34,6 @@ const listReducer = (state = initialState, action) => {
       return {
         ...state,
         lists: action.payload.lists
-      }
-    case DELETE_LIST:
-      return {
-        ...state,
-        lists: [...state.lists].filter((list) => list.name !== action.payload)
       }
     default: return state
   }
