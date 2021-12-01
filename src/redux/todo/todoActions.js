@@ -122,9 +122,9 @@ export const deleteTodo = (id) => {
 
 export const editTodo = (todo, tags, e) => {
   return async (dispatch, getState) => {
-    const todoState = getState().todo
-    const newListData = {
-      ...todoState
+    const currentState = getState().todo
+    const newState = {
+      ...currentState
     }
     const newTodo = await db.updateTodo({
       id: todo.id,
@@ -134,10 +134,15 @@ export const editTodo = (todo, tags, e) => {
       isDone: todo.isDone,
       tags: tags
     })
-    const todoIdToEdit = Object.keys(todoState.todos).find((key) => {
-      return todoState.todos[key].id === newTodo.id
+    const todoIdToEdit = Object.keys(currentState.todos).find((todoId) => {
+      return currentState.todos[todoId].id === newTodo.id
     })
-    newListData.todos[todoIdToEdit] = newTodo
-    dispatch(updateTodo(newListData))
+    if (newTodo.list !== todo.list) {
+      newState.lists[newTodo.list].todoIds.push(todoIdToEdit)
+      const indexToDel = newState.lists[todo.list].todoIds.indexOf(todoIdToEdit)
+      newState.lists[todo.list].todoIds.splice(indexToDel, 1)
+    }
+    newState.todos[todoIdToEdit] = newTodo
+    dispatch(updateTodo(newState))
   }
 }
