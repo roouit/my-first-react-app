@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchTodos, updateTodo } from './redux'
+import db from './components/database'
 
 const App = () => {
   const listData = useSelector((state) => state.todo)
@@ -17,7 +18,7 @@ const App = () => {
     dispatch(fetchTodos())
   }, [])
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result
     if (destination === null) return
     const newListData = {
@@ -33,6 +34,9 @@ const App = () => {
       destinationTodoIds.splice(destination.index, 0, draggableId)
       newListData.lists[destination.droppableId].todoIds = destinationTodoIds
       newListData.todos[draggableId].list = destination.droppableId
+      await db.updateTodo({
+        ...newListData.todos[draggableId]
+      })
     }
     newListData.lists[source.droppableId].todoIds = sourceTodoIds
     dispatch(updateTodo(newListData))
