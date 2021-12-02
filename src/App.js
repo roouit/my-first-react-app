@@ -7,7 +7,7 @@ import ListViewComponent from './components/ListViewComponent'
 import { Routes, Route } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchTodos, updateTodo } from './redux'
+import { fetchLists, fetchTodos, updateTodo } from './redux'
 import db from './components/database'
 
 const App = () => {
@@ -16,26 +16,49 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchTodos())
+    dispatch(fetchLists())
   }, [])
 
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result
+    const dragIdTodo = draggableId.match(/todo-[0-9]+/)[0]
+
+    // Dragging conditions with no action
     if (destination === null) return
+    if (listData.lists[destination.droppableId].todoIds.includes(dragIdTodo)) {
+      if (source.droppableId === 'all' && destination.droppableId !== 'all') return
+      if (source.droppableId !== 'all' && destination.droppableId === 'all') return
+    }
+
     const newListData = {
       ...listData
     }
-
     const sourceTodoIds = [...listData.lists[source.droppableId].todoIds]
-    sourceTodoIds.splice(source.index, 1)
+    const destinationTodoIds = [
+      ...listData.lists[destination.droppableId].todoIds
+    ]
+
     if (source.droppableId === destination.droppableId) {
-      sourceTodoIds.splice(destination.index, 0, draggableId)
+      sourceTodoIds.splice(source.index, 1)
+      sourceTodoIds.splice(destination.index, 0, dragIdTodo)
     } else {
-      const destinationTodoIds = [...listData.lists[destination.droppableId].todoIds]
-      destinationTodoIds.splice(destination.index, 0, draggableId)
-      newListData.lists[destination.droppableId].todoIds = destinationTodoIds
-      newListData.todos[draggableId].list = destination.droppableId
+      if (source.droppableId === 'all') {
+        destinationTodoIds.splice(destination.index, 0, dragIdTodo)
+        // find list where this todo was previously
+        const oldList = listData.todos[dragIdTodo].list
+        const oldListIndex =
+          newListData.lists[oldList].todoIds.indexOf(dragIdTodo)
+        // remove it from that list + set new list value
+        newListData.lists[oldList].todoIds.splice(oldListIndex, 1)
+        // update to database
+      } else {
+        sourceTodoIds.splice(source.index, 1)
+        destinationTodoIds.splice(destination.index, 0, dragIdTodo)
+      }
+      newListData.lists[destination.droppableId].todoIds = destinationTodoIds // set destination to state
+      newListData.todos[dragIdTodo].list = destination.droppableId // set new list value
       await db.updateTodo({
-        ...newListData.todos[draggableId]
+        ...newListData.todos[dragIdTodo]
       })
     }
     newListData.lists[source.droppableId].todoIds = sourceTodoIds

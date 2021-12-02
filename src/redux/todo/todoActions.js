@@ -28,13 +28,15 @@ const fetchTodosSuccess = (todos, lists) => {
         id: 'all',
         todoIds: []
       }
-    }
+    },
+    listOrder: ['all']
   }
   lists.forEach((list) => {
     todoData.lists[list.name.toLowerCase()] = {
       id: list.name,
       todoIds: []
     }
+    todoData.listOrder.push(list.name.toLowerCase())
   })
   todos.forEach((todo, index) => {
     const todoId = `todo-${index}`
@@ -109,12 +111,18 @@ export const deleteTodo = (id) => {
     const todoIdToDelete = Object.keys(todoState.todos).find((key) => {
       return todoState.todos[key].id === id
     })
+    const listToModify = todoState.todos[todoIdToDelete].list
+
+    newListData.lists[listToModify].todoIds = newListData.lists[
+      listToModify
+    ].todoIds.filter((key) => {
+      return todoState.todos[key].id !== id
+    })
+
+    newListData.lists.all.todoIds = newListData.lists.all.todoIds.filter((key) => {
+      return todoState.todos[key].id !== id
+    })
     delete newListData.todos[todoIdToDelete]
-    newListData.lists['tehtävät'].todoIds = Object.keys(todoState.todos).filter(
-      (key) => {
-        return todoState.todos[key].id !== id
-      }
-    )
     dispatch(updateTodo(newListData))
     await db.deleteTodo(id)
   }

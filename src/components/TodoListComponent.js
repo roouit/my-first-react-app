@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import TodoComponent from './TodoComponent'
 import './TodoListComponent.css'
 import React, { useEffect } from 'react'
@@ -6,20 +7,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
 import { fetchLists } from '../redux'
 
-const TodoListComponent = ({ data, listName, filters }) => {
-  const lists = useSelector((state) => state.list)
+const TodoListComponent = ({ listName, filters }) => {
+  const lists = useSelector(state => state.list)
   const todos = useSelector(state => state.todo)
   const dispatch = useDispatch()
 
   TodoListComponent.propTypes = {
-    data: PropTypes.object.isRequired,
     listName: PropTypes.string.isRequired,
     filters: PropTypes.array.isRequired
   }
 
-  useEffect(() => {
-    dispatch(fetchLists())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(fetchLists())
+  // }, [])
 
   const getFilteredTodos = () => {
     const filteredTodoIds = []
@@ -67,6 +67,7 @@ const TodoListComponent = ({ data, listName, filters }) => {
                         todoId={todoId}
                         todo={todos.todos[todoId]}
                         lists={lists}
+                        listName={listName}
                       />
                     )
                   }))}

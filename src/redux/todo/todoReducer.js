@@ -31,6 +31,7 @@ const listReducer = (state = initialState, action) => {
         loading: false,
         todos: action.payload.todos,
         lists: action.payload.lists,
+        listOrder: action.payload.listOrder,
         error: ''
       }
     case FETCH_TODOS_FAILURE:

@@ -6,7 +6,7 @@ import {
 } from './listTypes'
 
 const initialState = {
-  loading: false,
+  loading: true,
   lists: [],
   error: ''
 }
