@@ -19,14 +19,22 @@ const App = () => {
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result
-    const list = listData.lists[source.droppableId]
-    const newTodoIds = Array.from(list.todoIds)
-    newTodoIds.splice(source.index, 1)
-    newTodoIds.splice(destination.index, 0, draggableId)
+    if (destination === null) return
     const newListData = {
       ...listData
     }
-    newListData.lists[source.droppableId].todoIds = newTodoIds
+
+    const sourceTodoIds = [...listData.lists[source.droppableId].todoIds]
+    sourceTodoIds.splice(source.index, 1)
+    if (source.droppableId === destination.droppableId) {
+      sourceTodoIds.splice(destination.index, 0, draggableId)
+    } else {
+      const destinationTodoIds = [...listData.lists[destination.droppableId].todoIds]
+      destinationTodoIds.splice(destination.index, 0, draggableId)
+      newListData.lists[destination.droppableId].todoIds = destinationTodoIds
+      newListData.todos[draggableId].list = destination.droppableId
+    }
+    newListData.lists[source.droppableId].todoIds = sourceTodoIds
     dispatch(updateTodo(newListData))
   }
 

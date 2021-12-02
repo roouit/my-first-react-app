@@ -8,6 +8,7 @@ import { fetchLists } from '../redux'
 
 const TodoListComponent = ({ data, listName, filters }) => {
   const lists = useSelector((state) => state.list)
+  const todos = useSelector(state => state.todo)
   const dispatch = useDispatch()
 
   TodoListComponent.propTypes = {
@@ -27,9 +28,9 @@ const TodoListComponent = ({ data, listName, filters }) => {
       .map(tag => tag.substring(1))
     const textFilters = filters.filter((item) => !item.startsWith('#'))
     if (filters.length !== 0) {
-      data.lists[listName].todoIds.forEach((todoId) => {
-        const tags = data.todos[todoId].tags
-        const text = data.todos[todoId].text
+      todos.lists[listName].todoIds.forEach((todoId) => {
+        const tags = todos.todos[todoId].tags
+        const text = todos.todos[todoId].text
         if (tags.some((tag) => tagFilters.includes(tag))) {
           filteredTodoIds.push(todoId)
         } else if (
@@ -41,7 +42,7 @@ const TodoListComponent = ({ data, listName, filters }) => {
         }
       })
     } else {
-      return data.lists[listName].todoIds
+      return todos.lists[listName].todoIds
     }
     return filteredTodoIds
   }
@@ -60,13 +61,13 @@ const TodoListComponent = ({ data, listName, filters }) => {
               : (
                   getFilteredTodos().map((todoId, index) => {
                     return (
-                  <TodoComponent
-                    key={todoId}
-                    index={index}
-                    todoId={todoId}
-                    todo={data.todos[todoId]}
-                    lists={lists}
-                  />
+                      <TodoComponent
+                        key={todoId}
+                        index={index}
+                        todoId={todoId}
+                        todo={todos.todos[todoId]}
+                        lists={lists}
+                      />
                     )
                   }))}
             {provided.placeholder}
