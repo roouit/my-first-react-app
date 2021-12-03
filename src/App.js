@@ -12,6 +12,7 @@ import db from './components/database'
 
 const App = () => {
   const listData = useSelector((state) => state.todo)
+  const lists = useSelector((state) => state.list)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -70,11 +71,14 @@ const App = () => {
       <div className='App'>
         <NavComponent />
         <div className='content'>
-          <Routes>
-            <Route path='/' element={<HomePageComponent />} />
-            <Route path='/listat' element={<ListViewPageComponent />} />
-            <Route path='/tietoa' element={<InfoPageComponent />} />
-          </Routes>
+          {!listData.loading && !lists.loading
+            ? <Routes>
+                <Route path='/' element={<HomePageComponent />} />
+                <Route path='/listat' element={<ListViewPageComponent />} />
+                <Route path='/tietoa' element={<InfoPageComponent />} />
+              </Routes>
+            : null}
+
         </div>
       </div>
     </DragDropContext>

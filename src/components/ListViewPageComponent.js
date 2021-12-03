@@ -8,15 +8,20 @@ import ListViewComponent from './ListViewComponent'
 
 function ListViewPageComponent () {
   const [filters, setFilters] = useState([])
-  const [listCount, setListCount] = useState(3)
+  // const [listCount, setListCount] = useState(3)
+  const [listsToShow, setListsToShow] = useState([])
   const lists = useSelector(state => state.list)
   const listData = useSelector(state => state.todo)
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   dispatch(fetchLists())
-  //   dispatch(fetchTodos())
-  // }, [])
+  useEffect(() => {
+    const defaultListCount = 3
+    const numOfLists = Math.min(
+      defaultListCount,
+      Object.keys(listData.lists).length
+    )
+    setListsToShow(listData.listOrder.slice(0, numOfLists))
+  }, [])
 
   const handleAddList = e => {
     e.preventDefault()
@@ -33,11 +38,11 @@ function ListViewPageComponent () {
     dispatch(deleteList(e.target.innerText))
   }
 
-  const getListsToShow = () => {
-    const numOfLists = Math.min(listCount, Object.keys(listData.lists).length)
-    const listsToShow = listData.listOrder.slice(0, numOfLists)
-    return listsToShow
-  }
+  // const getListsToShow = () => {
+  //   const numOfLists = Math.min(listCount, Object.keys(listData.lists).length)
+  //   const listsToShow = listData.listOrder.slice(0, numOfLists)
+  //   return listsToShow
+  // }
 
   return (
     <div className='list-view-wrapper'>
@@ -59,14 +64,7 @@ function ListViewPageComponent () {
         </form>
       </div>
       <div className='list-view-lists'>
-          {!listData.loading && !lists.loading
-            ? (
-                getListsToShow().map((list) => <ListViewComponent key={list} listName={list} filters={filters}/>)
-                // <ListViewComponent key='työ' listName='työ' filters={filters}/>
-              )
-            : (
-                'Ladataan...'
-              )}
+        {listsToShow.map((list) => <ListViewComponent key={list} listName={list} filters={filters} listsToShow={listsToShow} setListsToShow={setListsToShow}/>)}
       </div>
     </div>
   )
