@@ -1,6 +1,6 @@
 import React from 'react'
 
-function InfoComponent () {
+function InfoPageComponent () {
   return (
         <div>
             <p>Tänne tulee tietoa sovelluksesta.</p>
@@ -8,4 +8,4 @@ function InfoComponent () {
   )
 }
 
-export default InfoComponent
+export default InfoPageComponent

@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addList, deleteList, fetchLists, fetchTodos } from '../redux'
 import './ListViewPageComponent.css'
 import TodoListComponent from './TodoListComponent'
+import ListViewComponent from './ListViewComponent'
 
-function ListViewComponent () {
+function ListViewPageComponent () {
   const [filters, setFilters] = useState([])
   const [listCount, setListCount] = useState(3)
   const lists = useSelector(state => state.list)
@@ -60,22 +61,8 @@ function ListViewComponent () {
       <div className='list-view-lists'>
           {!listData.loading && !lists.loading
             ? (
-                getListsToShow().map((list, index) => {
-                  return (
-                    <div
-                      className='list-view-item'
-                      key={list}
-                    >
-                      <h2>{list}</h2>
-                      <TodoListComponent
-                        key={list}
-                        listName={list}
-                        filters={filters}
-                      />
-                    </div>
-                  )
-                })
-
+                getListsToShow().map((list) => <ListViewComponent key={list} listName={list} filters={filters}/>)
+                // <ListViewComponent key='työ' listName='työ' filters={filters}/>
               )
             : (
                 'Ladataan...'
@@ -85,4 +72,4 @@ function ListViewComponent () {
   )
 }
 
-export default ListViewComponent
+export default ListViewPageComponent

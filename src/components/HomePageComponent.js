@@ -7,7 +7,7 @@ import moment from 'moment'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-const HomeComponent = () => {
+const HomePageComponent = () => {
   const [filters, setFilters] = useState([])
   const [sortByLastModified, setSortByLastModified] = useState(false)
   const listData = useSelector((state) => state.todo)
@@ -132,4 +132,4 @@ const HomeComponent = () => {
   )
 }
 
-export default HomeComponent
+export default HomePageComponent
