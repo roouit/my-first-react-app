@@ -113,11 +113,13 @@ export const deleteTodo = (id) => {
     })
     const listToModify = todoState.todos[todoIdToDelete].list
 
-    newListData.lists[listToModify].todoIds = newListData.lists[
-      listToModify
-    ].todoIds.filter((key) => {
-      return todoState.todos[key].id !== id
-    })
+    if (listToModify) {
+      newListData.lists[listToModify].todoIds = newListData.lists[
+        listToModify
+      ].todoIds.filter((key) => {
+        return todoState.todos[key].id !== id
+      })
+    }
 
     newListData.lists.all.todoIds = newListData.lists.all.todoIds.filter((key) => {
       return todoState.todos[key].id !== id
