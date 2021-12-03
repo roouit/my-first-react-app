@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import './App.css'
 import NavComponent from './components/NavComponent'
-import HomeComponent from './components/HomePageComponent'
-import InfoComponent from './components/InfoPageComponent'
-import ListViewComponent from './components/ListViewPageComponent'
+import HomePageComponent from './components/HomePageComponent'
+import InfoPageComponent from './components/InfoPageComponent'
+import ListViewPageComponent from './components/ListViewPageComponent'
 import { Routes, Route } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useSelector, useDispatch } from 'react-redux'
@@ -71,9 +71,9 @@ const App = () => {
         <NavComponent />
         <div className='content'>
           <Routes>
-            <Route path='/' element={<HomeComponent />} />
-            <Route path='/listat' element={<ListViewComponent />} />
-            <Route path='/tietoa' element={<InfoComponent />} />
+            <Route path='/' element={<HomePageComponent />} />
+            <Route path='/listat' element={<ListViewPageComponent />} />
+            <Route path='/tietoa' element={<InfoPageComponent />} />
           </Routes>
         </div>
       </div>
