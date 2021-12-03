@@ -26,7 +26,9 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
       indexToDel = newListsToShow.indexOf(e.target.value.toLowerCase())
     }
     newListsToShow[indexToAdd] = e.target.value.toLowerCase()
-    newListsToShow.splice(indexToDel, 1)
+    if (indexToDel) {
+      newListsToShow.splice(indexToDel, 1)
+    }
     setListsToShow(newListsToShow)
   }
 
