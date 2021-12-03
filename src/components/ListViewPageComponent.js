@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addList, deleteList, fetchLists, fetchTodos } from '../redux'
-import './ListViewComponent.css'
+import './ListViewPageComponent.css'
 import TodoListComponent from './TodoListComponent'
 
 function ListViewComponent () {
