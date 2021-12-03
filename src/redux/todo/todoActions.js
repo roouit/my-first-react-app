@@ -147,8 +147,11 @@ export const editTodo = (todo, tags, e) => {
     })
     if (newTodo.list !== todo.list) {
       newState.lists[newTodo.list].todoIds.push(todoIdToEdit)
-      const indexToDel = newState.lists[todo.list].todoIds.indexOf(todoIdToEdit)
-      newState.lists[todo.list].todoIds.splice(indexToDel, 1)
+      if (todo.list !== null) {
+        const indexToDel =
+          newState.lists[todo.list].todoIds.indexOf(todoIdToEdit)
+        newState.lists[todo.list].todoIds.splice(indexToDel, 1)
+      }
     }
     newState.todos[todoIdToEdit] = newTodo
     dispatch(updateTodo(newState))
