@@ -97,7 +97,7 @@ export const addTodo = (newText, listData) => {
       keys.length !== 0 ? Number(keys[keys.length - 1].split('-')[1]) : -1
     const newTodoId = `todo-${lastTodoIdNum + 1}`
     newListData.todos[newTodoId] = newTodo
-    newListData.lists['tehtävät'].todoIds.push(newTodoId)
+    newListData.lists.all.todoIds.push(newTodoId)
     dispatch(updateTodo(newListData))
   }
 }
