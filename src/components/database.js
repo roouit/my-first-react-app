@@ -88,6 +88,22 @@ async function updateTodo (todo) {
   return await result.json()
 }
 
+async function updateList (list) {
+  const obj = {
+    name: list.name
+  }
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj)
+  }
+  const result = await fetch(
+    `http://localhost:3010/lists/${list.id}`,
+    requestOptions
+  )
+  return await result.json()
+}
+
 const functions = {
   getAllLists: getAllLists,
   getAllTodos: getAllTodos,
@@ -96,6 +112,7 @@ const functions = {
   updateIsDone: updateIsDone,
   deleteTodo: deleteTodo,
   deleteList: deleteList,
-  updateTodo: updateTodo
+  updateTodo: updateTodo,
+  updateList: updateList
 }
 export default functions

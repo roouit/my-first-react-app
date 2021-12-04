@@ -59,6 +59,26 @@ export const addList = (newList) => {
   }
 }
 
+export const editList = (oldListName, newListName) => {
+  return async (dispatch, getState) => {
+    const listState = getState().list
+    const newListState = {
+      ...listState
+    }
+    const updatedList = {
+      name: newListName
+    }
+    newListState.lists.forEach((listItem, index) => {
+      if (listItem.name === oldListName) {
+        updatedList.id = listItem.id
+        newListState.lists[index].name = newListName
+      }
+    })
+    await db.updateList(updatedList)
+    dispatch(updateList(newListState))
+  }
+}
+
 export const deleteList = (listName) => {
   return async (dispatch, getState) => {
     const currentState = getState().list

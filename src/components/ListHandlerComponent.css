@@ -1,0 +1,36 @@
+.list-handler {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 25px;
+}
+
+.listname-list {
+    list-style-type: none;
+    text-align: left;
+    margin-top: 10px;
+}
+.listname-list li {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.listname-list li span {
+    margin-right: 10px;
+}
+
+.new-list-form input{
+    width: 140px;
+}
+
+.delete-list-button, .edit-list-button {
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+}
+
+.edit-list-text-input {
+    width: 140px;
+    margin-right: 10px;
+}
