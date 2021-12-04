@@ -6,3 +6,8 @@
 .list-view-lists {
   display: flex;
 }
+
+.layout-icon {
+  align-self: center;
+  margin: 10px 5px 0 5px;
+}

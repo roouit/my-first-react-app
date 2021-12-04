@@ -15,6 +15,7 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
 
   const getListName = () => {
     if (listName === 'all') return 'Kaikki'
+    if (listName === 'empty') return '-'
     return todos.lists[listName].id
   }
 
@@ -39,23 +40,48 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
 
   return (
     <div className='list-view-item' key={listName}>
-      <h2>{getListName()}</h2>
-      <select
-        defaultValue={getListName()}
-        name='todoList'
-        className='selected-list'
-        onChange={e => handleListChange(e)}
-      >
-        {Object.keys(todos.lists).map((list) => {
-          const id = todos.lists[list].id
-          return (
-            <option key={id} value={id}>
-              {id}
-            </option>
+      {listName === 'empty'
+        ? (
+        <>
+          <h2>{getListName()}</h2>
+          <select
+            defaultValue={getListName()}
+            name='todoList'
+            className='selected-list'
+            onChange={e => handleListChange(e)}
+          >
+            {Object.keys(todos.lists).map((list) => {
+              const id = todos.lists[list].id
+              return (
+                <option key={id} value={id}>
+                  {id}
+                </option>
+              )
+            })}
+          </select>
+        </>
           )
-        })}
-      </select>
-      <TodoListComponent key={listName} listName={listName} filters={filters} />
+        : (
+        <>
+          <h2>{getListName()}</h2>
+          <select
+            defaultValue={getListName()}
+            name='todoList'
+            className='selected-list'
+            onChange={e => handleListChange(e)}
+          >
+            {Object.keys(todos.lists).map((list) => {
+              const id = todos.lists[list].id
+              return (
+                <option key={id} value={id}>
+                  {id}
+                </option>
+              )
+            })}
+          </select>
+          <TodoListComponent key={listName} listName={listName} filters={filters} />
+        </>
+          )}
     </div>
   )
 }

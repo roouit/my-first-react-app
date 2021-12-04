@@ -8,20 +8,44 @@ import ListViewComponent from './ListViewComponent'
 
 function ListViewPageComponent () {
   const [filters, setFilters] = useState([])
-  // const [listCount, setListCount] = useState(3)
+  const [listCount, setListCount] = useState(3)
   const [listsToShow, setListsToShow] = useState([])
   const lists = useSelector(state => state.list)
   const listData = useSelector(state => state.todo)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const defaultListCount = 3
     const numOfLists = Math.min(
-      defaultListCount,
+      listCount,
       Object.keys(listData.lists).length
     )
-    setListsToShow(listData.listOrder.slice(0, numOfLists))
+    const newLists = listData.listOrder.slice(0, numOfLists)
+    while (newLists.length < listCount) {
+      newLists.push('empty')
+    }
+    setListsToShow(newLists)
   }, [])
+
+  useEffect(() => {
+    // const numOfLists = Math.min(
+    //   listCount,
+    //   Object.keys(listData.lists).length
+    // )
+    const newLists = [...listsToShow]
+    if (newLists.length > listCount) {
+      setListsToShow(newLists.slice(0, listCount))
+    } else {
+      listData.listOrder.forEach(list => {
+        if (!newLists.includes(list) && newLists.length < listCount) {
+          newLists.push(list)
+        }
+      })
+      while (newLists.length < listCount) {
+        newLists.push('empty')
+      }
+      setListsToShow(newLists)
+    }
+  }, [listCount])
 
   const handleAddList = e => {
     e.preventDefault()
@@ -44,9 +68,31 @@ function ListViewPageComponent () {
   //   return listsToShow
   // }
 
+  console.log(listsToShow)
+
   return (
     <div className='list-view-wrapper'>
       <div className='list-view-header'>
+        <div className='layout-icons'>
+          <img
+            className='layout-icon'
+            src='single-column.png'
+            alt='yksi palsta'
+            onClick={() => setListCount(1)}
+          ></img>
+          <img
+            className='layout-icon'
+            src='double-column.png'
+            alt='kaksi palstaa'
+            onClick={() => setListCount(2)}
+          ></img>
+          <img
+            className='layout-icon'
+            src='triple-column.png'
+            alt='kolme palstaa'
+            onClick={() => setListCount(3)}
+          ></img>
+        </div>
         <h1>Listat</h1>
         {lists.loading
           ? (
@@ -64,7 +110,15 @@ function ListViewPageComponent () {
         </form>
       </div>
       <div className='list-view-lists'>
-        {listsToShow.map((list) => <ListViewComponent key={list} listName={list} filters={filters} listsToShow={listsToShow} setListsToShow={setListsToShow}/>)}
+        {listsToShow.map((list, index) => (
+          <ListViewComponent
+            key={list + index}
+            listName={list}
+            filters={filters}
+            listsToShow={listsToShow}
+            setListsToShow={setListsToShow}
+          />
+        ))}
       </div>
     </div>
   )
