@@ -13,10 +13,10 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
     setListsToShow: PropTypes.func.isRequired
   }
 
-  const getListName = () => {
-    if (listName === 'all') return 'Kaikki'
-    if (listName === 'empty') return '-'
-    return todos.lists[listName].id
+  const getListName = (listId) => {
+    if (listId === 'all') return 'Kaikki'
+    if (listId === 'empty') return '-'
+    return todos.lists[listId].id
   }
 
   const handleListChange = (e) => {
@@ -43,18 +43,19 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
       {listName === 'empty'
         ? (
         <>
-          <h2>{getListName()}</h2>
+          <h2>{getListName(listName)}</h2>
           <select
-            defaultValue={getListName()}
+            defaultValue=''
             name='todoList'
             className='selected-list'
-            onChange={e => handleListChange(e)}
+            onChange={(e) => handleListChange(e)}
           >
+            <option disabled={true} key='' value=''></option>
             {Object.keys(todos.lists).map((list) => {
               const id = todos.lists[list].id
               return (
                 <option key={id} value={id}>
-                  {id}
+                  {getListName(id)}
                 </option>
               )
             })}
@@ -63,23 +64,27 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
           )
         : (
         <>
-          <h2>{getListName()}</h2>
+          <h2>{getListName(listName)}</h2>
           <select
-            defaultValue={getListName()}
+            defaultValue={listName}
             name='todoList'
             className='selected-list'
-            onChange={e => handleListChange(e)}
+            onChange={(e) => handleListChange(e)}
           >
             {Object.keys(todos.lists).map((list) => {
               const id = todos.lists[list].id
               return (
                 <option key={id} value={id}>
-                  {id}
+                  {getListName(id)}
                 </option>
               )
             })}
           </select>
-          <TodoListComponent key={listName} listName={listName} filters={filters} />
+          <TodoListComponent
+            key={listName}
+            listName={listName}
+            filters={filters}
+          />
         </>
           )}
     </div>

@@ -93,7 +93,6 @@ function ListViewPageComponent () {
             onClick={() => setListCount(3)}
           ></img>
         </div>
-        <h1>Listat</h1>
         {lists.loading
           ? (
           <div>Lataa listoja...</div>
@@ -106,7 +105,7 @@ function ListViewPageComponent () {
               ))
             )}
         <form onSubmit={(e) => handleAddList(e)}>
-          <input type='text' name='newListText'></input>
+          <input type='text' name='newListText' placeholder='Lisää uusi lista'></input>
         </form>
       </div>
       <div className='list-view-lists'>
