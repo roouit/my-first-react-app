@@ -20,7 +20,7 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
   }
 
   const handleListChange = (e) => {
-    const newListName = e.target.value === 'Kaikki' ? 'all' : e.target.value.toLowerCase()
+    const newListName = e.target.value.toLowerCase()
     console.log('newList', newListName)
     const newListsToShow = [...listsToShow]
     console.log('newLists', newListsToShow)
@@ -33,7 +33,8 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
     }
     newListsToShow[indexToAdd] = newListName
     if (typeof indexToDel === 'number') {
-      newListsToShow.splice(indexToDel, 1)
+      newListsToShow[indexToDel] = 'empty'
+      // newListsToShow.splice(indexToDel, 1)
     }
     setListsToShow(newListsToShow)
   }
