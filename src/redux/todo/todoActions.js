@@ -159,3 +159,25 @@ export const editTodo = (todo, tags, e) => {
     dispatch(updateTodo(newState))
   }
 }
+
+export const updateTodoLists = (oldListName, newListName) => {
+  return async (dispatch, getState) => {
+    const currentState = getState().todo
+    const newState = {
+      ...currentState
+    }
+    Object.keys(currentState.todos).forEach(async todoId => {
+      const todo = {
+        ...currentState.todos[todoId]
+      }
+      if (todo.list === oldListName) {
+        newState.todos[todoId].list = newListName
+        await db.updateTodo({
+          ...todo,
+          list: newListName
+        })
+      }
+    })
+    dispatch(updateTodo(newState))
+  }
+}

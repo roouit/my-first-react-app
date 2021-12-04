@@ -5,6 +5,7 @@ import {
   FETCH_LISTS_FAILURE
 } from './listTypes'
 import db from '../../components/database'
+import { updateTodoLists } from '../../redux'
 
 export const fetchListsRequest = () => {
   return {
@@ -75,6 +76,7 @@ export const editList = (oldListName, newListName) => {
       }
     })
     await db.updateList(updatedList)
+    dispatch(updateTodoLists(oldListName, newListName))
     dispatch(updateList(newListState))
   }
 }
