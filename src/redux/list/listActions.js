@@ -94,6 +94,7 @@ export const deleteList = (listName) => {
       )
     }
     await db.deleteList(listItemToDel.id)
+    dispatch(updateTodoLists(listName, null))
     dispatch(updateList(newState))
   }
 }

@@ -46,11 +46,11 @@ const App = () => {
       if (source.droppableId === 'all') {
         destinationTodoIds.splice(destination.index, 0, dragIdTodo)
         // find list where this todo was previously
-        const oldList = listData.todos[dragIdTodo].list
+        // const oldList = listData.todos[dragIdTodo].list
         const oldListIndex =
-          newListData.lists[oldList].todoIds.indexOf(dragIdTodo)
+          newListData.lists.all.todoIds.indexOf(dragIdTodo)
         // remove it from that list + set new list value
-        newListData.lists[oldList].todoIds.splice(oldListIndex, 1)
+        newListData.lists.all.todoIds.splice(oldListIndex, 1)
         // update to database
       } else {
         sourceTodoIds.splice(source.index, 1)
