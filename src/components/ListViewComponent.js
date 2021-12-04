@@ -19,14 +19,19 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
   }
 
   const handleListChange = (e) => {
+    const newListName = e.target.value === 'Kaikki' ? 'all' : e.target.value.toLowerCase()
+    console.log('newList', newListName)
     const newListsToShow = [...listsToShow]
+    console.log('newLists', newListsToShow)
     const indexToAdd = newListsToShow.indexOf(listName)
+    console.log('indexToAdd', indexToAdd)
     let indexToDel = null
-    if (newListsToShow.includes(e.target.value.toLowerCase())) {
-      indexToDel = newListsToShow.indexOf(e.target.value.toLowerCase())
+    if (newListsToShow.includes(newListName)) {
+      indexToDel = newListsToShow.indexOf(newListName)
+      console.log('indexToDel', indexToDel)
     }
-    newListsToShow[indexToAdd] = e.target.value.toLowerCase()
-    if (indexToDel) {
+    newListsToShow[indexToAdd] = newListName
+    if (typeof indexToDel === 'number') {
       newListsToShow.splice(indexToDel, 1)
     }
     setListsToShow(newListsToShow)
@@ -43,7 +48,11 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
       >
         {Object.keys(todos.lists).map((list) => {
           const id = todos.lists[list].id
-          return <option key={id} value={id}>{id}</option>
+          return (
+            <option key={id} value={id}>
+              {id}
+            </option>
+          )
         })}
       </select>
       <TodoListComponent key={listName} listName={listName} filters={filters} />
