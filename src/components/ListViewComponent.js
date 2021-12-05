@@ -1,26 +1,27 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import TodoListComponent from './TodoListComponent'
+import { setListsToShow } from '../redux'
 import PropTypes from 'prop-types'
 
-function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) {
+function ListViewComponent ({ listName, filters, listsToShow }) {
   const todos = useSelector((state) => state.todo)
+  const dispatch = useDispatch()
 
   ListViewComponent.propTypes = {
     listName: PropTypes.string.isRequired,
     filters: PropTypes.array.isRequired,
-    listsToShow: PropTypes.array.isRequired,
-    setListsToShow: PropTypes.func.isRequired
+    listsToShow: PropTypes.array.isRequired
   }
 
   const getListName = (listId) => {
     if (listId === 'all') return 'Kaikki'
     if (listId === 'empty') return '-'
-    return todos.lists[listId].id
+    return listId
   }
 
   const handleListChange = (e) => {
-    const newListName = e.target.value.toLowerCase()
+    const newListName = e.target.value
     console.log('newList', newListName)
     const newListsToShow = [...listsToShow]
     console.log('newLists', newListsToShow)
@@ -34,9 +35,8 @@ function ListViewComponent ({ listName, filters, listsToShow, setListsToShow }) 
     newListsToShow[indexToAdd] = newListName
     if (typeof indexToDel === 'number') {
       newListsToShow[indexToDel] = 'empty'
-      // newListsToShow.splice(indexToDel, 1)
     }
-    setListsToShow(newListsToShow)
+    dispatch(setListsToShow(newListsToShow))
   }
 
   return (

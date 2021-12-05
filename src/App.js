@@ -78,7 +78,6 @@ const App = () => {
                 <Route path='/tietoa' element={<InfoPageComponent />} />
               </Routes>
             : null}
-
         </div>
       </div>
     </DragDropContext>

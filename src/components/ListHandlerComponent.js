@@ -1,7 +1,7 @@
 import React from 'react'
 import './ListHandlerComponent.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { addList, deleteList, editList } from '../redux'
+import { addList, deleteList, editList, updateTodoLists } from '../redux'
 import ListItemComponent from './ListItemComponent'
 
 function ListHandlerComponent () {
@@ -27,6 +27,7 @@ function ListHandlerComponent () {
     e.preventDefault()
     const newListName = e.target.newListName.value
     dispatch(editList(oldListName, newListName))
+    dispatch(updateTodoLists(oldListName, newListName))
   }
 
   return (

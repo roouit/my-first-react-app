@@ -1,5 +1,6 @@
 import {
   UPDATE_LIST,
+  SET_LISTS_TO_SHOW,
   FETCH_LISTS_REQUEST,
   FETCH_LISTS_SUCCESS,
   FETCH_LISTS_FAILURE
@@ -31,6 +32,13 @@ export const updateList = (lists) => {
   return {
     type: UPDATE_LIST,
     payload: lists
+  }
+}
+
+export const setListsToShow = (newLists) => {
+  return {
+    type: SET_LISTS_TO_SHOW,
+    payload: newLists
   }
 }
 
@@ -75,8 +83,11 @@ export const editList = (oldListName, newListName) => {
         newListState.lists[index].name = newListName
       }
     })
+    if (newListState.listsToShow.includes(oldListName)) {
+      const index = newListState.listsToShow.indexOf(oldListName)
+      newListState.listsToShow[index] = newListName
+    }
     await db.updateList(updatedList)
-    dispatch(updateTodoLists(oldListName, newListName))
     dispatch(updateList(newListState))
   }
 }

@@ -32,18 +32,18 @@ const fetchTodosSuccess = (todos, lists) => {
     listOrder: ['all']
   }
   lists.forEach((list) => {
-    todoData.lists[list.name.toLowerCase()] = {
+    todoData.lists[list.name] = {
       id: list.name,
       todoIds: []
     }
-    todoData.listOrder.push(list.name.toLowerCase())
+    todoData.listOrder.push(list.name)
   })
   todos.forEach((todo, index) => {
     const todoId = `todo-${index}`
     todoData.todos[todoId] = todo
     Object.keys(todoData.lists).forEach(listName => {
       if (todo.list !== null) {
-        if (listName === todo.list.toLowerCase()) {
+        if (listName === todo.list) {
           todoData.lists[listName].todoIds.push(todoId)
         }
       }
@@ -178,6 +178,13 @@ export const updateTodoLists = (oldListName, newListName) => {
         })
       }
     })
+    newState.lists[newListName] = {
+      ...newState.lists[oldListName],
+      id: newListName
+    }
+    delete newState.lists[oldListName]
+    const indexToMod = newState.listOrder.indexOf(oldListName)
+    newState.listOrder[indexToMod] = newListName
     dispatch(updateTodo(newState))
   }
 }

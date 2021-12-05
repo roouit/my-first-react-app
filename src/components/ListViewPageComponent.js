@@ -1,6 +1,6 @@
-
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setListsToShow } from '../redux'
 import './ListViewPageComponent.css'
 import ListViewComponent from './ListViewComponent'
 
@@ -8,8 +8,9 @@ function ListViewPageComponent () {
   // eslint-disable-next-line no-unused-vars
   const [filters, setFilters] = useState([])
   const [listCount, setListCount] = useState(3)
-  const [listsToShow, setListsToShow] = useState([])
   const listData = useSelector(state => state.todo)
+  const lists = useSelector((state) => state.list)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const numOfLists = Math.min(
@@ -20,13 +21,13 @@ function ListViewPageComponent () {
     while (newLists.length < listCount) {
       newLists.push('empty')
     }
-    setListsToShow(newLists)
+    dispatch(setListsToShow(newLists))
   }, [])
 
   useEffect(() => {
-    const newLists = [...listsToShow]
+    const newLists = [...lists.listsToShow]
     if (newLists.length > listCount) {
-      setListsToShow(newLists.slice(0, listCount))
+      dispatch(setListsToShow(newLists.slice(0, listCount)))
     } else {
       listData.listOrder.forEach(list => {
         if (!newLists.includes(list) && newLists.length < listCount) {
@@ -36,7 +37,7 @@ function ListViewPageComponent () {
       while (newLists.length < listCount) {
         newLists.push('empty')
       }
-      setListsToShow(newLists)
+      dispatch(setListsToShow(newLists))
     }
   }, [listCount])
 
@@ -65,13 +66,12 @@ function ListViewPageComponent () {
         </div>
       </div>
       <div className='list-view-lists'>
-        {listsToShow.map((list, index) => (
+        {lists.listsToShow.map((list, index) => (
           <ListViewComponent
             key={list + index}
             listName={list}
             filters={filters}
-            listsToShow={listsToShow}
-            setListsToShow={setListsToShow}
+            listsToShow={lists.listsToShow}
           />
         ))}
       </div>

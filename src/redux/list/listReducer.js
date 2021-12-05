@@ -1,5 +1,6 @@
 import {
   UPDATE_LIST,
+  SET_LISTS_TO_SHOW,
   FETCH_LISTS_REQUEST,
   FETCH_LISTS_SUCCESS,
   FETCH_LISTS_FAILURE
@@ -8,6 +9,7 @@ import {
 const initialState = {
   loading: true,
   lists: [],
+  listsToShow: [],
   error: ''
 }
 
@@ -20,12 +22,14 @@ const listReducer = (state = initialState, action) => {
       }
     case FETCH_LISTS_SUCCESS:
       return {
+        ...state,
         loading: false,
         lists: action.payload,
         error: ''
       }
     case FETCH_LISTS_FAILURE:
       return {
+        ...state,
         loading: false,
         lists: [],
         error: action.payload
@@ -35,7 +39,13 @@ const listReducer = (state = initialState, action) => {
         ...state,
         lists: action.payload.lists
       }
-    default: return state
+    case SET_LISTS_TO_SHOW:
+      return {
+        ...state,
+        listsToShow: action.payload
+      }
+    default:
+      return state
   }
 }
 

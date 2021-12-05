@@ -1,25 +1,18 @@
-/* eslint-disable no-unused-vars */
 import TodoComponent from './TodoComponent'
 import './TodoListComponent.css'
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
-import { fetchLists } from '../redux'
 
 const TodoListComponent = ({ listName, filters }) => {
   const lists = useSelector(state => state.list)
   const todos = useSelector(state => state.todo)
-  const dispatch = useDispatch()
 
   TodoListComponent.propTypes = {
     listName: PropTypes.string.isRequired,
     filters: PropTypes.array.isRequired
   }
-
-  // useEffect(() => {
-  //   dispatch(fetchLists())
-  // }, [])
 
   const getFilteredTodos = () => {
     const filteredTodoIds = []

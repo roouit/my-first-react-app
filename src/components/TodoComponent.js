@@ -87,7 +87,7 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
             className='edit-todo-list'
           >
             {lists.lists.map((list) => (
-              <option key={list.name} value={list.name.toLowerCase()}>
+              <option key={list.name} value={list.name}>
                 {list.name}
               </option>
             ))}
