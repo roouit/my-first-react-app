@@ -56,15 +56,16 @@ export const fetchLists = () => {
 
 export const addList = (newList) => {
   return async (dispatch, getState) => {
-    const listState = getState().list
-    const newListState = {
-      ...listState
+    const currentState = getState().list
+    const newState = {
+      ...currentState
     }
     const newListObject = await db.addList({
       name: newList
     })
-    newListState.lists.push(newListObject)
-    dispatch(updateList(newListState))
+    newState.lists.push(newListObject)
+    dispatch(updateTodoLists(null, newList))
+    dispatch(updateList(newState))
   }
 }
 
@@ -103,6 +104,10 @@ export const deleteList = (listName) => {
       lists: currentState.lists.filter(
         (list) => list.name !== listItemToDel.name
       )
+    }
+    if (newState.listsToShow.includes(listName)) {
+      const index = newState.listsToShow.indexOf(listName)
+      newState.listsToShow.splice(index, 1)
     }
     await db.deleteList(listItemToDel.id)
     dispatch(updateTodoLists(listName, null))

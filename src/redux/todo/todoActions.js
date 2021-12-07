@@ -166,25 +166,41 @@ export const updateTodoLists = (oldListName, newListName) => {
     const newState = {
       ...currentState
     }
-    Object.keys(currentState.todos).forEach(async todoId => {
-      const todo = {
-        ...currentState.todos[todoId]
+    if (oldListName === null) {
+      newState.lists[newListName] = {
+        id: newListName,
+        todoIds: []
       }
-      if (todo.list === oldListName) {
-        newState.todos[todoId].list = newListName
-        await db.updateTodo({
-          ...todo,
-          list: newListName
-        })
+      newState.listOrder.push(newListName)
+    } else {
+      Object.keys(currentState.todos).forEach(async (todoId) => {
+        const todo = {
+          ...currentState.todos[todoId]
+        }
+        if (todo.list === oldListName) {
+          newState.todos[todoId].list = newListName
+          await db.updateTodo({
+            ...todo,
+            list: newListName
+          })
+        }
+      })
+      if (newListName !== null) {
+        console.log('ei ole null')
+        newState.lists[newListName] = {
+          ...newState.lists[oldListName],
+          id: newListName
+        }
       }
-    })
-    newState.lists[newListName] = {
-      ...newState.lists[oldListName],
-      id: newListName
+      const indexToMod = newState.listOrder.indexOf(oldListName)
+      if (newListName === null) {
+        newState.listOrder.splice(indexToMod, 1)
+      } else {
+        newState.listOrder[indexToMod] = newListName
+      }
+
+      delete newState.lists[oldListName]
     }
-    delete newState.lists[oldListName]
-    const indexToMod = newState.listOrder.indexOf(oldListName)
-    newState.listOrder[indexToMod] = newListName
     dispatch(updateTodo(newState))
   }
 }
