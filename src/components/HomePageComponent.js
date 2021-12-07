@@ -14,7 +14,7 @@ const HomePageComponent = () => {
   const dispatch = useDispatch()
 
   const getSortedTodoList = () => {
-    const sortedArray = listData.lists['tehtävät'].todoIds.sort(
+    const sortedArray = listData.lists.all.todoIds.sort(
       (a, b) =>
         moment(listData.todos[b].last_modified).valueOf() -
         moment(listData.todos[a].last_modified).valueOf()
@@ -22,7 +22,7 @@ const HomePageComponent = () => {
     const newListData = {
       ...listData
     }
-    newListData.lists['tehtävät'].todoIds = sortedArray
+    newListData.lists.all.todoIds = sortedArray
     return newListData
   }
 
