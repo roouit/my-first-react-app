@@ -12,6 +12,12 @@ async function getAllTodos () {
   return todos
 }
 
+async function getCachedData () {
+  const result = await fetch('http://localhost:3010/cache')
+  const cache = await result.json()
+  return cache
+}
+
 async function getById (id) {
   let todos = await fetch(`http://localhost:3010/todos/${id}`)
   todos = await todos.json()
@@ -104,15 +110,32 @@ async function updateList (list) {
   return await result.json()
 }
 
+async function updateCacheListsToShow (newListsToShow) {
+  const obj = {
+    listsToShow: newListsToShow
+  }
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj)
+  }
+  await fetch(
+    'http://localhost:3010/cache/1',
+    requestOptions
+  )
+}
+
 const functions = {
   getAllLists: getAllLists,
   getAllTodos: getAllTodos,
+  getCachedData: getCachedData,
   addTodo: addTodo,
   addList: addList,
   updateIsDone: updateIsDone,
   deleteTodo: deleteTodo,
   deleteList: deleteList,
   updateTodo: updateTodo,
-  updateList: updateList
+  updateList: updateList,
+  updateCacheListsToShow
 }
 export default functions

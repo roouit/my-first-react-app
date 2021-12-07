@@ -24,7 +24,8 @@ const listReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        lists: action.payload,
+        lists: action.payload.lists,
+        listsToShow: action.payload.cache.listsToShow,
         error: ''
       }
     case FETCH_LISTS_FAILURE:

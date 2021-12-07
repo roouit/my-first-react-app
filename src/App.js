@@ -66,6 +66,9 @@ const App = () => {
     dispatch(updateTodo(newListData))
   }
 
+  // console.log('listData', listData)
+  // console.log('lists', lists)
+
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <div className='App'>

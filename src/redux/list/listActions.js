@@ -14,10 +14,13 @@ export const fetchListsRequest = () => {
   }
 }
 
-const fetchListsSuccess = (lists) => {
+const fetchListsSuccess = (lists, cache) => {
   return {
     type: FETCH_LISTS_SUCCESS,
-    payload: lists
+    payload: {
+      lists: lists,
+      cache: cache[0]
+    }
   }
 }
 
@@ -47,7 +50,8 @@ export const fetchLists = () => {
     dispatch(fetchListsRequest())
     try {
       const lists = await db.getAllLists()
-      dispatch(fetchListsSuccess(lists))
+      const cache = await db.getCachedData()
+      dispatch(fetchListsSuccess(lists, cache))
     } catch (error) {
       dispatch(fetchListsFailure(error))
     }
@@ -89,6 +93,7 @@ export const editList = (oldListName, newListName) => {
       newListState.listsToShow[index] = newListName
     }
     await db.updateList(updatedList)
+    await db.updateCacheListsToShow(newListState.listsToShow)
     dispatch(updateList(newListState))
   }
 }
@@ -110,6 +115,7 @@ export const deleteList = (listName) => {
       newState.listsToShow.splice(index, 1)
     }
     await db.deleteList(listItemToDel.id)
+    await db.updateCacheListsToShow(newState.listsToShow)
     dispatch(updateTodoLists(listName, null))
     dispatch(updateList(newState))
   }
