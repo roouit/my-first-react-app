@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateTodo, addTodo } from '../redux'
 import TodoListComponent from './TodoListComponent'
@@ -10,8 +10,17 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 const HomePageComponent = () => {
   const [filters, setFilters] = useState([])
   const [sortByLastModified, setSortByLastModified] = useState(false)
+  const [update, setUpdate] = useState(false)
   const listData = useSelector((state) => state.todo)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (sortByLastModified && update) {
+      const newListData = getSortedTodoList()
+      setUpdate(false)
+      dispatch(updateTodo(newListData))
+    }
+  }, [listData])
 
   const getSortedTodoList = () => {
     const sortedArray = listData.lists.all.todoIds.sort(
@@ -30,6 +39,7 @@ const HomePageComponent = () => {
     if (sortByLastModified === false) {
       const newListData = getSortedTodoList()
       dispatch(updateTodo(newListData))
+      setUpdate(true)
     }
     setSortByLastModified(!sortByLastModified)
   }
@@ -38,11 +48,7 @@ const HomePageComponent = () => {
     e.preventDefault()
     dispatch(addTodo(e.target.todoText.value, listData))
     e.target.todoText.value = ''
-    // TO FIX
-    // if (sortByLastModified) {
-    //   const sortedListData = getSortedTodoList()
-    //   setListData(sortedListData)
-    // }
+    setUpdate(true)
   }
 
   const handleAddFilters = (e) => {
@@ -108,7 +114,7 @@ const HomePageComponent = () => {
           {!listData.loading
             ? (
             <TodoListComponent
-              data={listData}
+              // data={listData}
               listName='all'
               filters={filters}
             />
