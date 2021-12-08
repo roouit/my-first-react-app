@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import TodoListComponent from './TodoListComponent'
-import { setListsToShow } from '../redux'
+import { updateListsToShow } from '../redux'
 import PropTypes from 'prop-types'
 
 function ListViewComponent ({ listName, filters, listsToShow }) {
@@ -36,7 +36,7 @@ function ListViewComponent ({ listName, filters, listsToShow }) {
     if (typeof indexToDel === 'number') {
       newListsToShow[indexToDel] = 'empty'
     }
-    dispatch(setListsToShow(newListsToShow))
+    dispatch(updateListsToShow(newListsToShow))
   }
 
   return (

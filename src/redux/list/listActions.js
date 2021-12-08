@@ -38,10 +38,10 @@ export const updateList = (lists) => {
   }
 }
 
-export const setListsToShow = (newLists) => {
+export const setListsToShow = (newListsToShow) => {
   return {
     type: SET_LISTS_TO_SHOW,
-    payload: newLists
+    payload: newListsToShow
   }
 }
 
@@ -118,5 +118,12 @@ export const deleteList = (listName) => {
     await db.updateCacheListsToShow(newState.listsToShow)
     dispatch(updateTodoLists(listName, null))
     dispatch(updateList(newState))
+  }
+}
+
+export const updateListsToShow = (newListsToShow) => {
+  return async (dispatch, getState) => {
+    await db.updateCacheListsToShow(newListsToShow)
+    dispatch(setListsToShow(newListsToShow))
   }
 }

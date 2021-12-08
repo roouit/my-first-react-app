@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setListsToShow, updateTodo } from '../redux'
+import { updateListsToShow, updateTodo } from '../redux'
 import moment from 'moment'
 import './ListViewPageComponent.css'
 import ListViewComponent from './ListViewComponent'
@@ -23,7 +23,7 @@ function ListViewPageComponent () {
     while (newLists.length < listCount) {
       newLists.push('empty')
     }
-    dispatch(setListsToShow(newLists))
+    dispatch(updateListsToShow(newLists))
   }, [])
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function ListViewPageComponent () {
   useEffect(() => {
     const newLists = [...lists.listsToShow]
     if (newLists.length > listCount) {
-      dispatch(setListsToShow(newLists.slice(0, listCount)))
+      dispatch(updateListsToShow(newLists.slice(0, listCount)))
     } else {
       listData.listOrder.forEach(list => {
         if (!newLists.includes(list) && newLists.length < listCount) {
@@ -47,7 +47,7 @@ function ListViewPageComponent () {
       while (newLists.length < listCount) {
         newLists.push('empty')
       }
-      dispatch(setListsToShow(newLists))
+      dispatch(updateListsToShow(newLists))
     }
   }, [listCount])
 
