@@ -21,7 +21,6 @@ export const fetchTodosRequest = () => {
 }
 
 const fetchTodosSuccess = (todos, lists, cache) => {
-  console.log(cache)
   const todoData = {
     todos: {},
     lists: cache[1].lists,
@@ -95,6 +94,7 @@ export const addTodo = (newText, listData) => {
     const newTodoId = `todo-${lastTodoIdNum + 1}`
     newListData.todos[newTodoId] = newTodo
     newListData.lists.all.todoIds.push(newTodoId)
+    await db.updateCacheLists(newListData.lists)
     dispatch(updateTodo(newListData))
   }
 }
@@ -124,6 +124,7 @@ export const deleteTodo = (id) => {
     delete newListData.todos[todoIdToDelete]
     dispatch(updateTodo(newListData))
     await db.deleteTodo(id)
+    await db.updateCacheLists(newListData.lists)
   }
 }
 
@@ -151,6 +152,7 @@ export const editTodo = (todo, tags, e) => {
           newState.lists[todo.list].todoIds.indexOf(todoIdToEdit)
         newState.lists[todo.list].todoIds.splice(indexToDel, 1)
       }
+      await db.updateCacheLists(newState.lists)
     }
     newState.todos[todoIdToEdit] = newTodo
     dispatch(updateTodo(newState))
@@ -183,7 +185,6 @@ export const updateTodoLists = (oldListName, newListName) => {
         }
       })
       if (newListName !== null) {
-        console.log('ei ole null')
         newState.lists[newListName] = {
           ...newState.lists[oldListName],
           id: newListName
@@ -198,6 +199,7 @@ export const updateTodoLists = (oldListName, newListName) => {
 
       delete newState.lists[oldListName]
     }
+    await db.updateCacheLists(newState.lists)
     dispatch(updateTodo(newState))
   }
 }

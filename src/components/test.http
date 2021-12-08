@@ -1,8 +1,23 @@
-PUT http://localhost:3010/cache/1
+PUT http://localhost:3010/cache/2
 Content-Type: application/json
 
 {
-      "listsToShow": ["all", "Opiskelut", "empty"]
+      "lists": {
+                  "all": {
+                        "id": "all",
+                        "todoIds": [
+                              "todo-1",
+                              "todo-0"
+                        ]
+                  },
+                  "Opiskelu": {
+                        "id": "Opiskelu",
+                        "todoIds": [
+                              "todo-1",
+                              "todo-0"
+                        ]
+                  }
+      }
 }
 
 ###

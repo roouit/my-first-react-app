@@ -125,6 +125,20 @@ async function updateCacheListsToShow (newListsToShow) {
   )
 }
 
+async function updateCacheLists (newLists) {
+  const obj = {
+    lists: {
+      ...newLists
+    }
+  }
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj)
+  }
+  await fetch('http://localhost:3010/cache/2', requestOptions)
+}
+
 const functions = {
   getAllLists: getAllLists,
   getAllTodos: getAllTodos,
@@ -136,6 +150,7 @@ const functions = {
   deleteList: deleteList,
   updateTodo: updateTodo,
   updateList: updateList,
-  updateCacheListsToShow
+  updateCacheListsToShow: updateCacheListsToShow,
+  updateCacheLists: updateCacheLists
 }
 export default functions
