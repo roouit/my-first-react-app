@@ -63,7 +63,6 @@ const App = () => {
       })
     }
     newListData.lists[source.droppableId].todoIds = sourceTodoIds
-    await db.updateCacheLists(newListData.lists)
     dispatch(updateTodo(newListData))
   }
 

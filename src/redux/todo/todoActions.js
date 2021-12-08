@@ -7,7 +7,7 @@ import {
 import db from '../../components/database'
 import moment from 'moment'
 
-export const updateTodo = (newTodoState) => {
+export const updateTodoState = (newTodoState) => {
   return {
     type: UPDATE_TODO,
     payload: newTodoState
@@ -74,6 +74,13 @@ export const fetchTodos = () => {
   }
 }
 
+export const updateTodo = (newTodoState) => {
+  return async (dispatch, getState) => {
+    await db.updateCacheLists(newTodoState.lists)
+    dispatch(updateTodoState(newTodoState))
+  }
+}
+
 export const addTodo = (newText, listData) => {
   return async (dispatch) => {
     const newTodoData = {
@@ -95,7 +102,7 @@ export const addTodo = (newText, listData) => {
     newListData.todos[newTodoId] = newTodo
     newListData.lists.all.todoIds.push(newTodoId)
     await db.updateCacheLists(newListData.lists)
-    dispatch(updateTodo(newListData))
+    dispatch(updateTodoState(newListData))
   }
 }
 
@@ -122,7 +129,7 @@ export const deleteTodo = (id) => {
       return todoState.todos[key].id !== id
     })
     delete newListData.todos[todoIdToDelete]
-    dispatch(updateTodo(newListData))
+    dispatch(updateTodoState(newListData))
     await db.deleteTodo(id)
     await db.updateCacheLists(newListData.lists)
   }
@@ -155,7 +162,7 @@ export const editTodo = (todo, tags, e) => {
       await db.updateCacheLists(newState.lists)
     }
     newState.todos[todoIdToEdit] = newTodo
-    dispatch(updateTodo(newState))
+    dispatch(updateTodoState(newState))
   }
 }
 
@@ -200,6 +207,6 @@ export const updateTodoLists = (oldListName, newListName) => {
       delete newState.lists[oldListName]
     }
     await db.updateCacheLists(newState.lists)
-    dispatch(updateTodo(newState))
+    dispatch(updateTodoState(newState))
   }
 }
