@@ -27,23 +27,11 @@ const fetchTodosSuccess = (todos, lists, cache) => {
     listOrder: ['all']
   }
   lists.forEach((list) => {
-    // todoData.lists[list.name] = {
-    //   id: list.name,
-    //   todoIds: []
-    // }
     todoData.listOrder.push(list.name)
   })
   todos.forEach((todo, index) => {
     const todoId = `todo-${index}`
     todoData.todos[todoId] = todo
-    // Object.keys(todoData.lists).forEach(listName => {
-    //   if (todo.list !== null) {
-    //     if (listName === todo.list) {
-    //       todoData.lists[listName].todoIds.push(todoId)
-    //     }
-    //   }
-    // })
-    // todoData.lists.all.todoIds.push(todoId)
   })
   return {
     type: FETCH_TODOS_SUCCESS,
@@ -89,7 +77,8 @@ export const addTodo = (newText, listData) => {
       list: null,
       isDone: false,
       tags: [],
-      last_modified: moment().format('YYYY-MM-DDTHH:mm:ss')
+      last_modified: moment().format('YYYY-MM-DDTHH:mm:ss'),
+      notified: false
     }
     const newTodo = await db.addTodo(newTodoData)
     const newListData = {
@@ -147,7 +136,8 @@ export const editTodo = (todo, tags, e) => {
       due: e.target.todoDue.value,
       list: e.target.todoList.value,
       isDone: todo.isDone,
-      tags: tags
+      tags: tags,
+      notified: todo.notified
     })
     const todoIdToEdit = Object.keys(currentState.todos).find((todoId) => {
       return currentState.todos[todoId].id === newTodo.id

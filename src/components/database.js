@@ -67,7 +67,8 @@ async function updateIsDone (id) {
       isDone: !todo.isDone,
       list: todo.list,
       tags: todo.tags,
-      last_modified: todo.last_modified
+      last_modified: todo.last_modified,
+      notified: todo.notified
     })
   }
   await fetch(`http://localhost:3010/todos/${id}`, requestOptions)
@@ -80,7 +81,8 @@ async function updateTodo (todo) {
     isDone: todo.isDone,
     list: todo.list,
     tags: todo.tags,
-    last_modified: moment().format('YYYY-MM-DDTHH:mm:ss')
+    last_modified: moment().format('YYYY-MM-DDTHH:mm:ss'),
+    notified: todo.notified
   }
   const requestOptions = {
     method: 'PUT',
