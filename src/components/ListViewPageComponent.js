@@ -15,18 +15,6 @@ function ListViewPageComponent () {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const numOfLists = Math.min(
-      listCount,
-      Object.keys(listData.lists).length
-    )
-    const newLists = listData.listOrder.slice(0, numOfLists)
-    while (newLists.length < listCount) {
-      newLists.push('empty')
-    }
-    dispatch(updateListsToShow(newLists))
-  }, [])
-
-  useEffect(() => {
     if (sortByLastModified && update) {
       const newListData = getSortedTodoList()
       setUpdate(false)
@@ -35,6 +23,7 @@ function ListViewPageComponent () {
   }, [listData])
 
   useEffect(() => {
+    console.log(listCount)
     const newLists = [...lists.listsToShow]
     if (newLists.length > listCount) {
       dispatch(updateListsToShow(newLists.slice(0, listCount)))
