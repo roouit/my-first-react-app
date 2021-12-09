@@ -21,16 +21,13 @@ function ListViewComponent ({ listName, filters, listsToShow }) {
   }
 
   const handleListChange = (e) => {
+    console.log(e)
     const newListName = e.target.value
-    console.log('newList', newListName)
     const newListsToShow = [...listsToShow]
-    console.log('newLists', newListsToShow)
     const indexToAdd = newListsToShow.indexOf(listName)
-    console.log('indexToAdd', indexToAdd)
     let indexToDel = null
     if (newListsToShow.includes(newListName)) {
       indexToDel = newListsToShow.indexOf(newListName)
-      console.log('indexToDel', indexToDel)
     }
     newListsToShow[indexToAdd] = newListName
     if (typeof indexToDel === 'number') {
