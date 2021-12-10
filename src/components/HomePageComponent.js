@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateTodo, addTodo } from '../redux'
 import TodoListComponent from './TodoListComponent'
+import CalendarComponent from './CalendarComponent'
 import './HomePageComponent.css'
 import moment from 'moment'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
 
 const HomePageComponent = () => {
   const [filters, setFilters] = useState([])
@@ -123,17 +122,7 @@ const HomePageComponent = () => {
                 'Ladataan...'
               )}
       </div>
-      <div className='calendar'>
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView='dayGridWeek'
-          weekends={false}
-          events={[
-            { title: 'Käy kaupassa', date: '2021-11-29' },
-            { title: 'Treenit', date: '2021-12-01' }
-          ]}
-        />
-      </div>
+      <CalendarComponent/>
     </div>
   )
 }
