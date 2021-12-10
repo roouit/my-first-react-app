@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { updateNotified } from '../redux'
 import moment from 'moment'
+import AlarmToast from './alarm-toast'
 
 function useCheckAlarms (todos) {
   const dispatch = useDispatch()
@@ -25,7 +26,7 @@ function useCheckAlarms (todos) {
       toUpdate.forEach(todoId => {
         newTodos.todos[todoId].notified = true
         dispatch(updateNotified(newTodos, newTodos.todos[todoId]))
-        console.log('set notified to true:', todoId)
+        AlarmToast(newTodos.todos[todoId])
       })
       toUpdate = []
     }

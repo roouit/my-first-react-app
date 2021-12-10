@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchLists, fetchTodos, updateTodo } from './redux'
 import db from './components/database'
 import useCheckAlarms from './hooks/use-check-alarms'
+import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   const listData = useSelector((state) => state.todo)
@@ -56,19 +57,15 @@ const App = () => {
     } else {
       if (source.droppableId === 'all') {
         destinationTodoIds.splice(destination.index, 0, dragIdTodo)
-        // find list where this todo was previously
-        // const oldList = listData.todos[dragIdTodo].list
         const oldListIndex =
           newListData.lists.all.todoIds.indexOf(dragIdTodo)
-        // remove it from that list + set new list value
         newListData.lists.all.todoIds.splice(oldListIndex, 1)
-        // update to database
       } else {
         sourceTodoIds.splice(source.index, 1)
         destinationTodoIds.splice(destination.index, 0, dragIdTodo)
       }
-      newListData.lists[destination.droppableId].todoIds = destinationTodoIds // set destination to state
-      newListData.todos[dragIdTodo].list = destination.droppableId // set new list value
+      newListData.lists[destination.droppableId].todoIds = destinationTodoIds
+      newListData.todos[dragIdTodo].list = destination.droppableId
       await db.updateTodo({
         ...newListData.todos[dragIdTodo]
       })
@@ -80,6 +77,7 @@ const App = () => {
   return (
     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <div className='App'>
+        <Toaster/>
         <NavComponent />
         <div className='content'>
           {!listData.loading && !lists.loading

@@ -23,7 +23,6 @@ function ListViewPageComponent () {
   }, [listData])
 
   useEffect(() => {
-    console.log(listCount)
     const newLists = [...lists.listsToShow]
     if (newLists.length > listCount) {
       dispatch(updateListsToShow(newLists.slice(0, listCount)))
