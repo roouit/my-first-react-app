@@ -20,6 +20,10 @@
   text-decoration: line-through;
 }
 
+.done .todo-edit-button {
+  pointer-events: none;
+}
+
 .todo-delete-button {
   transform: scale(0.8);
   position: absolute;

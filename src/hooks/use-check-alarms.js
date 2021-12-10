@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { updateNotified } from '../redux'
 import moment from 'moment'
-import AlarmToast from './alarm-toast'
+import AlarmToast from './utils/alarm-toast'
 
 function useCheckAlarms (todos) {
   const dispatch = useDispatch()
