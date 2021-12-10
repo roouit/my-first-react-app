@@ -69,6 +69,13 @@ export const updateTodo = (newTodoState) => {
   }
 }
 
+export const updateNotified = (newTodoState, todo) => {
+  return async (dispatch, getState) => {
+    await db.updateTodo(todo)
+    dispatch(updateTodoState(newTodoState))
+  }
+}
+
 export const addTodo = (newText, listData) => {
   return async (dispatch) => {
     const newTodoData = {

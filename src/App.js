@@ -9,11 +9,12 @@ import { DragDropContext } from 'react-beautiful-dnd'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchLists, fetchTodos, updateTodo } from './redux'
 import db from './components/database'
-import { checkAlarms } from './util/check-alarms'
+import useCheckAlarms from './hooks/use-check-alarms'
 
 const App = () => {
   const listData = useSelector((state) => state.todo)
   const lists = useSelector((state) => state.list)
+  const alarmChecker = useCheckAlarms(listData)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const App = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      checkAlarms(listData.todos)
+      alarmChecker()
     }, 2000)
     return () => {
       clearInterval(intervalId)
