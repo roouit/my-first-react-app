@@ -26,18 +26,18 @@ function CalendarComponent () {
     <div className='calendar'>
       <FullCalendar
         plugins={[dayGridPlugin]}
-        // height={400}
+        height={200}
         headerToolbar={{
           left: 'today',
           right: 'prev,next'
         }}
         views={{
-          threeDayView: {
+          twoDayView: {
             type: 'dayGrid',
-            duration: { days: 3 }
+            duration: { days: 2 }
           }
         }}
-        initialView='threeDayView'
+        initialView='twoDayView'
         events={getEvents()}
       />
     </div>

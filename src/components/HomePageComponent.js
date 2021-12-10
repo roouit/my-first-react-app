@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateTodo, addTodo } from '../redux'
@@ -78,28 +79,32 @@ const HomePageComponent = () => {
           ></input>
           Järjestä automaattisesti muokkausajan mukaan
         </label>
-        <form
-          className='filter-todos-form'
-          onSubmit={(e) => handleAddFilters(e)}
-        >
-          <input
-            type='text'
-            name='todoFilters'
-            className='filter-todos'
-            placeholder='Suodata tehtäviä..'
-          ></input>
-        </form>
-        <div>
-          {filters.map((filter) => {
-            return (
-              <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
-                {filter}
-                <br></br>
-              </span>
-            )
-          })}
-        </div>
-        <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
+        <div className='search-bar'>
+          <form
+            className='filter-todos-form'
+            onSubmit={(e) => handleAddFilters(e)}
+          >
+            <input
+              type='text'
+              name='todoFilters'
+              className='filter-todos'
+              placeholder='Hae tehtävistä..'
+            ></input>
+            <span>
+              <button className='add-todo-save-button'>Hae</button>
+            </span>
+            <div>
+            {filters.map((filter) => {
+              return (
+                <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
+                  {filter}
+                  <br></br>
+                </span>
+              )
+            })}
+            </div>
+          </form>
+          <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
           <input
             type='text'
             name='todoText'
@@ -107,9 +112,10 @@ const HomePageComponent = () => {
             placeholder='Lisää uusi tehtävä..'
           ></input>
           <span>
-            <button className='add-todo-save-button'>Tallenna</button>
+            <button className='add-todo-save-button'>Lisää</button>
           </span>
         </form>
+        </div>
           {!listData.loading
             ? (
             <TodoListComponent
