@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateTodo, addTodo } from '../redux'
@@ -77,7 +76,7 @@ const HomePageComponent = () => {
             defaultChecked={sortByLastModified}
             onChange={() => handleSortTodos()}
           ></input>
-          Järjestä automaattisesti muokkausajan mukaan
+          Näytä viimeksi muokatut ensin
         </label>
         <div className='search-bar'>
           <form
@@ -91,7 +90,7 @@ const HomePageComponent = () => {
               placeholder='Hae tehtävistä..'
             ></input>
             <span>
-              <button className='add-todo-save-button'>Hae</button>
+              <button className='add-filter-button'>Hae</button>
             </span>
             <div>
             {filters.map((filter) => {

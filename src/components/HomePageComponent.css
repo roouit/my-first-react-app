@@ -30,10 +30,6 @@
   overflow: auto;
 }
 
-.todos-today h1 {
-  /* margin-bottom: 10px; */
-}
-
 .fc-event-time, .fc-event-title {
 padding: 0 1px;
 white-space: normal;

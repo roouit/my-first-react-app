@@ -111,7 +111,7 @@ function ListViewPageComponent () {
               defaultChecked={sortByLastModified}
               onChange={() => handleSortTodos()}
             ></input>
-            Järjestä automaattisesti muokkausajan mukaan
+            Näytä viimeksi muokatut ensin
           </label>
           <form
             className='filter-todos-form'
@@ -121,19 +121,22 @@ function ListViewPageComponent () {
               type='text'
               name='todoFilters'
               className='filter-todos'
-              placeholder='Suodata tehtäviä..'
+              placeholder='Hae tehtävistä..'
             ></input>
+            <span>
+              <button className='add-filter-button'>Hae</button>
+            </span>
+            <div>
+              {filters.map((filter) => {
+                return (
+                  <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
+                    {filter}
+                    <br></br>
+                  </span>
+                )
+              })}
+            </div>
           </form>
-          <div>
-            {filters.map((filter) => {
-              return (
-                <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
-                  {filter}
-                  <br></br>
-                </span>
-              )
-            })}
-          </div>
         </div>
       </div>
       <div className='list-view-lists'>

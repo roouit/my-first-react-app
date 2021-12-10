@@ -1,10 +1,25 @@
+.list-view-wrapper {
+  height: 100%;
+  max-height: 100%;
+}
+
 .list-view-header {
+  height: 100px;
   display: flex;
   flex-direction: column;
 }
 
 .list-view-lists {
   display: flex;
+  justify-content: space-around;
+  height: 100%;
+  max-height: calc(100% - 100px);
+}
+
+.list-view-item {
+  height: 100%;
+  max-height: 100%;
+  flex: 1;
 }
 
 .layout-icon {
