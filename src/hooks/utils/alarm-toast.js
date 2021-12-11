@@ -32,7 +32,6 @@ function AlarmToast (todo) {
     {
       duration: Infinity,
       position: 'top-center',
-      // Styling
       style: {
         border: '2px solid yellow'
       },

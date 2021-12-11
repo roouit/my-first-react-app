@@ -77,7 +77,6 @@ const HomePageComponent = () => {
           <input
             className='todo-sort-by-edit'
             type='checkbox'
-            // defaultChecked={sortByLastModified}
             checked={sortByLastModified}
             onChange={() => handleSortTodos()}
           ></input>
