@@ -141,7 +141,7 @@ export const editTodo = (todo, tags, e) => {
       id: todo.id,
       text: e.target.todoText.value,
       due: e.target.todoDue.value,
-      list: e.target.todoList.value,
+      list: e.target.todoList.value === 'empty' ? null : e.target.todoList.value,
       isDone: todo.isDone,
       tags: tags,
       notified: todo.notified
@@ -150,7 +150,9 @@ export const editTodo = (todo, tags, e) => {
       return currentState.todos[todoId].id === newTodo.id
     })
     if (newTodo.list !== todo.list) {
-      newState.lists[newTodo.list].todoIds.push(todoIdToEdit)
+      if (newTodo.list !== null) {
+        newState.lists[newTodo.list].todoIds.push(todoIdToEdit)
+      }
       if (todo.list !== null) {
         const indexToDel =
           newState.lists[todo.list].todoIds.indexOf(todoIdToEdit)

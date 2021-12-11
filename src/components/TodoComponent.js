@@ -106,6 +106,7 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
             name='todoList'
             className='edit-todo-list'
           >
+            <option key='empty' value='empty'></option>
             {lists.lists.map((list) => (
               <option key={list.name} value={list.name}>
                 {list.name}
@@ -127,7 +128,11 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
           {tags
             ? tags.map((tag) => {
               return (
-                  <span className='todo-tag' key={tag} onClick={(e) => handleRemoveTag(e)}>
+                  <span
+                    className='todo-tag'
+                    key={tag}
+                    onClick={(e) => handleRemoveTag(e)}
+                  >
                     #{tag}
                   </span>
               )
