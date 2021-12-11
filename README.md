@@ -8,7 +8,7 @@ A basic todo-application made as a course project.
 
 * Add, edit and delete todos and todo lists (collections)
 * View multiple lists simultaneously
-* Order and sort manually with [beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
+* Sort manually with [beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
 * Add alarms to todos (and get toast notifications)
 * View todos in [FullCalendar](https://fullcalendar.io/), if alarm is set
 * Filter by text and tags
@@ -16,14 +16,14 @@ A basic todo-application made as a course project.
 ## Technology
 
 * **Frontend**
-  * *React*
-  * *React Redux*
+  * React
+  * React Redux
 * **Backend**
   * `json-server` with a local JSON database
 
 ## Installation
 
-Clone the repository: `git clone https://github.com/roouit/react-todo-app.git`
+Clone the repository: `git clone https://github.com/roouit/my-first-react-app.git`
 
 Install dependencies: `npm install`
 
