@@ -10,7 +10,6 @@ function CalendarComponent () {
     const events = []
     Object.keys(todos).forEach(todoId => {
       const todo = todos[todoId]
-      console.log(todo)
       if (todo.due) {
         events.push({
           title: todo.text,
@@ -18,7 +17,6 @@ function CalendarComponent () {
         })
       }
     })
-    console.log(events)
     return events
   }
 

@@ -56,12 +56,32 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
     setTags(newTags)
   }
 
+  const getFormattedDate = (rawDateString) => {
+    let dateFormatted = ''
+    const date = new Date(rawDateString)
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+    const hour =
+      String(date.getHours()).split('').length === 1
+        ? `0${date.getHours()}`
+        : date.getHours()
+    const minutes =
+      String(date.getMinutes()).split('').length === 1
+        ? `0${date.getMinutes()}`
+        : date.getMinutes()
+    console.log(String(hour).split('').length)
+    dateFormatted = `
+      ${day}.${month}.${year} ${hour}:${minutes}`
+    return dateFormatted
+  }
+
   return editView
     ? (
     <li className={isDone ? 'todo done' : 'todo'}>
       <form className='edit-todo-form' onSubmit={(e) => handleSubmit(e)}>
         <label>
-          <span>Kuvaus</span>
+          <span>Kuvaus: </span>
           <input
             type='text'
             name='todoText'
@@ -70,7 +90,7 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
           ></input>
         </label>
         <label>
-          <span>Määräaika</span>
+          <span>Aseta hälytys: </span>
           <input
             type='datetime-local'
             name='todoDue'
@@ -80,7 +100,7 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
           ></input>
         </label>
         <label>
-          <span>Lista</span>
+          <span>Lista: </span>
           <select
             defaultValue={todo.list}
             name='todoList'
@@ -94,7 +114,7 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
           </select>
         </label>
         <label>
-          <span>Tagit</span>
+          <span>Tagit: </span>
           <input
             type='tags'
             name='todoTags'
@@ -103,15 +123,17 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
             onKeyPress={(e) => handleAddTag(e)}
           ></input>
         </label>
-        {tags
-          ? tags.map((tag) => {
-            return (
-                <span key={tag} onClick={(e) => handleRemoveTag(e)}>
-                  #{tag}
-                </span>
-            )
-          })
-          : ''}
+        <div className='todo-tags'>
+          {tags
+            ? tags.map((tag) => {
+              return (
+                  <span className='todo-tag' key={tag} onClick={(e) => handleRemoveTag(e)}>
+                    #{tag}
+                  </span>
+              )
+            })
+            : ''}
+        </div>
         <span>
           <button className='edit-todo-save-button'>Tallenna</button>
           <button
@@ -152,13 +174,32 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
               defaultChecked={isDone}
               onChange={() => handleUpdateIsDone()}
             ></input>
-            {todo.text}
+            <span className='todo-text'>{todo.text}</span>
           </label>
-          {todo.due ? <span>{todo.due}</span> : ''}
-          {todo.list ? <span>{todo.list}</span> : ''}
-          {todo.tags
-            ? todo.tags.map((tag) => <span key={tag}>#{tag}</span>)
-            : ''}
+          {todo.due
+            ? (
+            <div className='todo-due'>
+              <img
+                className='todo-alarm-icon'
+                src='alarm-fill.png'
+                alt='hälytys ikoni'
+              ></img>
+              <span>{getFormattedDate(todo.due)}</span>
+            </div>
+              )
+            : (
+                ''
+              )}
+          {todo.list ? <span className='todo-list-name'>{todo.list}</span> : ''}
+          <div className='todo-tags'>
+            {todo.tags
+              ? todo.tags.map((tag) => (
+                  <span className='todo-tag' key={tag}>
+                    #{tag}
+                  </span>
+              ))
+              : ''}
+          </div>
           <img
             className='todo-delete-button'
             src='delete-bin-fill.png'

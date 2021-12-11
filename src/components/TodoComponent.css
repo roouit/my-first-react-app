@@ -4,10 +4,55 @@
   align-items: center;
   position: relative;
   background-color: #fff;
-  width: fit-content;
+  width: 100%;
   border-radius: 8px;
-  padding: 25px 30px;
+  padding: 25px 30px 20px 30px;
   margin-top: 5px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.todo-text {
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+.todo-list-name {
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  font-size: 0.8em;
+}
+
+.todo-due {
+  display: flex;
+  position: absolute;
+  left: 10px;
+  bottom: 5px;
+  font-size: 0.8em;
+}
+
+.todo-alarm-icon {
+  width: 14px;
+  align-self: center;
+  margin-right: 5px;
+}
+
+.todo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 0.8em;
+  width: 80%;
+  margin: 5px 0;
+}
+
+.todo-tag {
+  margin-right: 4px;
+  margin-bottom: 2px;
+  padding: 0 3px;
+  background-color: rgb(200, 238, 255);
+  border-radius: 5px;
 }
 
 .edit-todo-form {
@@ -25,7 +70,7 @@
 }
 
 .todo-delete-button {
-  transform: scale(0.8);
+  transform: scale(0.7);
   position: absolute;
   right: 0;
   top: 0;
@@ -33,7 +78,7 @@
 }
 
 .todo-edit-button {
-  transform: scale(0.8);
+  transform: scale(0.7);
   position: absolute;
   right: 20px;
   top: 0;
