@@ -92,10 +92,14 @@ const HomePageComponent = () => {
             <span>
               <button className='add-filter-button'>Hae</button>
             </span>
-            <div>
+            <div className='filters-list'>
             {filters.map((filter) => {
               return (
-                <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
+                <span
+                  className='filter-item'
+                  key={filter}
+                  onClick={(e) => handleRemoveFilter(e)}
+                >
                   {filter}
                   <br></br>
                 </span>
