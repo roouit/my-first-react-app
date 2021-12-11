@@ -36,3 +36,10 @@
     margin-right: 10px;
 
 }
+
+@media (max-width: 650px) {
+    .navigation {
+        max-width: 180px;
+        font-size: 0.9em;
+    }
+}

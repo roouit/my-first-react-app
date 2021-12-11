@@ -8,10 +8,14 @@ import moment from 'moment'
 
 const HomePageComponent = () => {
   const [filters, setFilters] = useState([])
-  const [sortByLastModified, setSortByLastModified] = useState(true)
+  const [sortByLastModified, setSortByLastModified] = useState(false)
   const [update, setUpdate] = useState(false)
   const listData = useSelector((state) => state.todo)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    handleSortTodos()
+  }, [])
 
   useEffect(() => {
     if (sortByLastModified && update) {
@@ -73,7 +77,8 @@ const HomePageComponent = () => {
           <input
             className='todo-sort-by-edit'
             type='checkbox'
-            defaultChecked={sortByLastModified}
+            // defaultChecked={sortByLastModified}
+            checked={sortByLastModified}
             onChange={() => handleSortTodos()}
           ></input>
           Näytä viimeksi muokatut ensin
@@ -93,45 +98,45 @@ const HomePageComponent = () => {
               <button className='add-filter-button'>Hae</button>
             </span>
             <div className='filters-list'>
-            {filters.map((filter) => {
-              return (
-                <span
-                  className='filter-item'
-                  key={filter}
-                  onClick={(e) => handleRemoveFilter(e)}
-                >
-                  {filter}
-                  <br></br>
-                </span>
-              )
-            })}
+              {filters.map((filter) => {
+                return (
+                  <span
+                    className='filter-item'
+                    key={filter}
+                    onClick={(e) => handleRemoveFilter(e)}
+                  >
+                    {filter}
+                    <br></br>
+                  </span>
+                )
+              })}
             </div>
           </form>
           <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
-          <input
-            type='text'
-            name='todoText'
-            className='add-todo-text'
-            placeholder='Lisää uusi tehtävä..'
-          ></input>
-          <span>
-            <button className='add-todo-save-button'>Lisää</button>
-          </span>
-        </form>
+            <input
+              type='text'
+              name='todoText'
+              className='add-todo-text'
+              placeholder='Lisää uusi tehtävä..'
+            ></input>
+            <span>
+              <button className='add-todo-save-button'>Lisää</button>
+            </span>
+          </form>
         </div>
-          {!listData.loading
-            ? (
-            <TodoListComponent
-              listName='all'
-              filters={filters}
-              setUpdate={setUpdate}
-            />
-              )
-            : (
-                'Ladataan...'
-              )}
+        {!listData.loading
+          ? (
+          <TodoListComponent
+            listName='all'
+            filters={filters}
+            setUpdate={setUpdate}
+          />
+            )
+          : (
+              'Ladataan...'
+            )}
       </div>
-      <CalendarComponent/>
+      <CalendarComponent />
     </div>
   )
 }

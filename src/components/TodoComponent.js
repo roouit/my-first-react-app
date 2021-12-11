@@ -72,7 +72,6 @@ const TodoComponent = ({ todo, index, todoId, lists, listName, setUpdate }) => {
       String(date.getMinutes()).split('').length === 1
         ? `0${date.getMinutes()}`
         : date.getMinutes()
-    console.log(String(hour).split('').length)
     dateFormatted = `
       ${day}.${month}.${year} ${hour}:${minutes}`
     return dateFormatted

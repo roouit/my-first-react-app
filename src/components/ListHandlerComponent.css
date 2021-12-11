@@ -20,7 +20,7 @@
     margin-right: 10px;
 }
 
-.new-list-form input{
+.new-list-form input {
     width: 140px;
 }
 
@@ -33,4 +33,10 @@
 .edit-list-text-input {
     width: 140px;
     margin-right: 10px;
+}
+
+@media (max-width: 650px) {
+    .new-list-form input {
+        width: 120px;
+    }
 }

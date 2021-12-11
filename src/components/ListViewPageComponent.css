@@ -45,3 +45,27 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+@media (max-width: 800px) {
+  .list-view-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .list-view-lists {
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: calc(100% - 155px);
+  }
+
+  .list-view-item {
+    max-height: 32%;
+    flex: 1;
+    padding: 0 20px;
+  }
+
+  .list-view-item .todo-wrapper {
+    max-height: calc(100% - 60px);
+  }
+}

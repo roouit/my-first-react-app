@@ -48,6 +48,7 @@ white-space: normal;
   .todos-today {
     max-height: calc(100% - 220px);
     width: 90%;
+    padding: 20px 0px;
     order: 1
   }
 }
