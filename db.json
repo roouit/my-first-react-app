@@ -1,0 +1,19 @@
+{
+  "todos": [],
+  "lists": [],
+  "cache": [
+    {
+      "listsToShow": ["all"],
+      "id": 1
+    },
+    {
+      "lists": {
+        "all": {
+          "id": "all",
+          "todoIds": []
+        }
+      },
+      "id": 2
+    }
+  ]
+}

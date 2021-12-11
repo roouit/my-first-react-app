@@ -9,9 +9,6 @@
 /coverage
 .http
 
-# data
-db.json
-
 # production
 /build
 
