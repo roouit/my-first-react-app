@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateListsToShow, updateTodo } from '../redux'
+import { updateListsToShow, updateTodo, addTodo } from '../redux'
 import moment from 'moment'
 import './ListViewPageComponent.css'
 import ListViewComponent from './ListViewComponent'
@@ -54,6 +54,13 @@ function ListViewPageComponent () {
       }
     })
     return newListData
+  }
+
+  const handleAddTodo = (e) => {
+    e.preventDefault()
+    dispatch(addTodo(e.target.todoText.value, listData))
+    e.target.todoText.value = ''
+    setUpdate(true)
   }
 
   const handleSortTodos = () => {
@@ -113,30 +120,43 @@ function ListViewPageComponent () {
             ></input>
             Näytä viimeksi muokatut ensin
           </label>
-          <form
-            className='filter-todos-form'
-            onSubmit={(e) => handleAddFilters(e)}
-          >
-            <input
-              type='text'
-              name='todoFilters'
-              className='filter-todos'
-              placeholder='Hae tehtävistä..'
-            ></input>
-            <span>
-              <button className='add-filter-button'>Hae</button>
-            </span>
-            <div>
-              {filters.map((filter) => {
-                return (
-                  <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
-                    {filter}
-                    <br></br>
-                  </span>
-                )
-              })}
-            </div>
-          </form>
+          <div className='search-bar'>
+            <form
+              className='filter-todos-form'
+              onSubmit={(e) => handleAddFilters(e)}
+            >
+              <input
+                type='text'
+                name='todoFilters'
+                className='filter-todos'
+                placeholder='Hae tehtävistä..'
+              ></input>
+              <span>
+                <button className='add-filter-button'>Hae</button>
+              </span>
+              <div>
+                {filters.map((filter) => {
+                  return (
+                    <span key={filter} onClick={(e) => handleRemoveFilter(e)}>
+                      {filter}
+                      <br></br>
+                    </span>
+                  )
+                })}
+              </div>
+            </form>
+            <form className='add-todo-form' onSubmit={(e) => handleAddTodo(e)}>
+              <input
+                type='text'
+                name='todoText'
+                className='add-todo-text'
+                placeholder='Lisää uusi tehtävä..'
+              ></input>
+              <span>
+                <button className='add-todo-save-button'>Lisää</button>
+              </span>
+            </form>
+          </div>
         </div>
       </div>
       <div className='list-view-lists'>
