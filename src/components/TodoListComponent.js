@@ -5,13 +5,14 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
 
-const TodoListComponent = ({ listName, filters }) => {
+const TodoListComponent = ({ listName, filters, setUpdate }) => {
   const lists = useSelector(state => state.list)
   const todos = useSelector(state => state.todo)
 
   TodoListComponent.propTypes = {
     listName: PropTypes.string.isRequired,
-    filters: PropTypes.array.isRequired
+    filters: PropTypes.array.isRequired,
+    setUpdate: PropTypes.func.isRequired
   }
 
   const getFilteredTodos = () => {
@@ -61,6 +62,7 @@ const TodoListComponent = ({ listName, filters }) => {
                         todo={todos.todos[todoId]}
                         lists={lists}
                         listName={listName}
+                        setUpdate={setUpdate}
                       />
                     )
                   }))}

@@ -8,7 +8,7 @@ import moment from 'moment'
 
 const HomePageComponent = () => {
   const [filters, setFilters] = useState([])
-  const [sortByLastModified, setSortByLastModified] = useState(false)
+  const [sortByLastModified, setSortByLastModified] = useState(true)
   const [update, setUpdate] = useState(false)
   const listData = useSelector((state) => state.todo)
   const dispatch = useDispatch()
@@ -122,9 +122,9 @@ const HomePageComponent = () => {
           {!listData.loading
             ? (
             <TodoListComponent
-              // data={listData}
               listName='all'
               filters={filters}
+              setUpdate={setUpdate}
             />
               )
             : (

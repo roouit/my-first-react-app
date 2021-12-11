@@ -166,6 +166,7 @@ function ListViewPageComponent () {
             listName={list}
             filters={filters}
             listsToShow={lists.listsToShow}
+            setUpdate={setUpdate}
           />
         ))}
       </div>

@@ -4,14 +4,15 @@ import TodoListComponent from './TodoListComponent'
 import { updateListsToShow } from '../redux'
 import PropTypes from 'prop-types'
 
-function ListViewComponent ({ listName, filters, listsToShow }) {
+function ListViewComponent ({ listName, filters, listsToShow, setUpdate }) {
   const todos = useSelector((state) => state.todo)
   const dispatch = useDispatch()
 
   ListViewComponent.propTypes = {
     listName: PropTypes.string.isRequired,
     filters: PropTypes.array.isRequired,
-    listsToShow: PropTypes.array.isRequired
+    listsToShow: PropTypes.array.isRequired,
+    setUpdate: PropTypes.func.isRequired
   }
 
   const getListName = (listId) => {
@@ -82,6 +83,7 @@ function ListViewComponent ({ listName, filters, listsToShow }) {
             key={listName}
             listName={listName}
             filters={filters}
+            setUpdate={setUpdate}
           />
         </>
           )}

@@ -7,7 +7,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import { useDispatch } from 'react-redux'
 import { deleteTodo, editTodo } from '../redux'
 
-const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
+const TodoComponent = ({ todo, index, todoId, lists, listName, setUpdate }) => {
   const [isDone, setIsDone] = useState(todo.isDone)
   const [editView, setEditView] = useState(false)
   const [tags, setTags] = useState(todo.tags)
@@ -18,7 +18,8 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
     index: PropTypes.number.isRequired,
     todoId: PropTypes.string.isRequired,
     lists: PropTypes.object.isRequired,
-    listName: PropTypes.string.isRequired
+    listName: PropTypes.string.isRequired,
+    setUpdate: PropTypes.func.isRequired
   }
 
   const handleUpdateIsDone = async () => {
@@ -30,6 +31,7 @@ const TodoComponent = ({ todo, index, todoId, lists, listName }) => {
     e.preventDefault()
     if (e.target.todoTags.value === '') {
       dispatch(editTodo(todo, tags, e))
+      setUpdate(true)
       setEditView(!editView)
     } else {
       e.target.todoTags.value = ''
