@@ -58,3 +58,7 @@ Make sure you have a file named `db.json` in the root folder with following data
 Run the server: `npx json-server -H localhost -p 3010 -w ./db.json`
 
 Run React in dev mode: `npm start`
+
+## License
+
+MIT License
